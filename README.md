@@ -1,3 +1,9 @@
+# Infos intern zum Code
+- das Datenformat um die Funktionen laufen zu lassen, muss im Format (mit der gleichen Bennenung der Spalten!) wie dat_final sein
+- das ist zwar jetzt (Stand: 13.12.2023) noch nicht angepasst, aber ich brauche auch noch die partielle Ordnungsstruktur von ordinal_1 und ordinal_2 (das sollte aber bis zum 21.12.2023 eingearbeitet sein, mit einem Bsp, wie das Format dafür dann sein muss)
+
+
+
 # Robust Statistical Comparison of Classification Algorithms
 
 ## Introduction
