@@ -38,9 +38,5 @@ In order to reproduce the papers' key results (and visualizations thereof) furth
 Running these three files sources the files in 'R/' and reproduces our result. Note that the folder 'R/', 'data/' and the three xxx_permutation_tests.R files must be in the same folder structure. Also make sure that the working directory of the R session links in the same folder.
 
 ## References to the data sets:
-- poverty analysis data: GESIS. Allgemeine Bevölkerungsumfrage der Sozialwissenschaften Allbus 2014. GESIS Datenarchiv, Köln. ZA5240
-Datenfile Version 2.2.0, https://doi.org/10.4232/1.13141, 2018
-- credit approval data: G Demiroz, HA Govenir, and N Ilter. Learning differential diagnosis of eryhemato-squamous diseases using voting feature
-intervals. Artificial Intelligence in Medicine, 13(3):147–165, 1998
-- dermatological symptoms data: D. Dua and C. Graff. UCI machine learning repository, 2017. http://archive.ics.uci.edu/ml.
+TODOOO
 
