@@ -115,9 +115,11 @@ data_openml_filter <- data_openml_filter[, c("learner.name",
 # We discretize both cpu times
 cuttings_test <- quantile(data_openml_filter$usercpu.time.millis.testing, probs = seq(0, 1, 0.1))
 data_openml_filter$usercpu.time.millis.testing <- findInterval(data_openml_filter$usercpu.time.millis.testing, cuttings_test)
+data_openml_filter$usercpu.time.millis.testing <- max(data_openml_filter$usercpu.time.millis.testing) + 1 - data_openml_filter$usercpu.time.millis.testing
 
 cutting_train <- quantile(data_openml_filter$usercpu.time.millis.training, probs = seq(0, 1, 0.1))
 data_openml_filter$usercpu.time.millis.training <- findInterval(data_openml_filter$usercpu.time.millis.training, cutting_train)
+data_openml_filter$usercpu.time.millis.training <- max(data_openml_filter$usercpu.time.millis.training) + 1 - data_openml_filter$usercpu.time.millis.training
 
 ################################################################################
 # Conduct the permutation test and plotting the single comparisons
@@ -221,7 +223,7 @@ for (classifier in classifiers_comparison) {
   saveRDS(dat_set, paste0(classifier, "dat_set.rds"))
   # dat_final <- readRDS("dat_final.rds")
   start_time <- Sys.time()
-  result_inner <- test_two_items(dat_set)
+  result_inner <- test_two_items(dat_set, iteration_number = 10)
 
   # result[[classifier]] <- result_inner
   # plotting_permutationtest(result_inner$permutation_test, result_inner$d_observed,
