@@ -70,7 +70,7 @@ plotting_permutationtest <- function(permutation_test, d_observed,
                                              yend = test +0.99), color = "red", size = 1)
 
 
-  jpeg(file= paste0(add_name_file, "values_teststatistic.jpeg"))
+  jpeg(file= paste0(add_name_file, "_values_teststatistic.jpeg"))
   print(figure_2)
   dev.off()
 
@@ -170,7 +170,7 @@ plotting_permutationtest <- function(permutation_test, d_observed,
                          "$$\\epsilon = 1$$"))))
 
 
-  jpeg(file= paste0(add_name_file, "regularization.jpeg"))
+  jpeg(file= paste0(add_name_file, "_regularization.jpeg"))
   print(figure_3)
   dev.off()
 

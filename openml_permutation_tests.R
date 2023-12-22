@@ -25,6 +25,7 @@ library(OpenML) # downloading data from openml
 library(dplyr)
 library(farff)
 library(reshape2)
+library(parallel)
 
 source("R/constraints_r1_r2.R") # contains the functions compute_constraints...
 source("R/sample_permutation_test.R") # permutation test, sample etc
@@ -78,7 +79,6 @@ extractDataId <- function(taskid){
 data_openml$data.id = sapply(data_openml$task.id,function(x)extractDataId(taskid = x))
 
 
-
 # data_final[which(is.na(data_final$data.id)), ]
 # taskid = 3019: Data set has been deactivated. Thus delete this one
 if (length(which(is.na(data_openml$data.id))) > 0) {
@@ -103,32 +103,34 @@ data_openml_filter <- data_openml_filter[order(data_openml_filter$data.name), ]
 # data_openml_filter <- readRDS("data_openml_filter.rds")
 
 
+# We select those performance measures using for the evaluation
+# numeric information: predictive.accuracy
+# ordinal information: usercpu.time.accuracy and root.mean.square.error
+data_openml_filter <- data_openml_filter[, c("learner.name",
+                                               "predictive.accuracy",
+                                               "usercpu.time.millis.training",
+                                               "usercpu.time.millis.testing"
+)]
 
+# We discretize both cpu times
+cuttings_test <- quantile(data_openml_filter$usercpu.time.millis.testing, probs = seq(0, 1, 0.1))
+data_openml_filter$usercpu.time.millis.testing <- findInterval(data_openml_filter$usercpu.time.millis.testing, cuttings_test)
 
-
-
-
+cutting_train <- quantile(data_openml_filter$usercpu.time.millis.training, probs = seq(0, 1, 0.1))
+data_openml_filter$usercpu.time.millis.training <- findInterval(data_openml_filter$usercpu.time.millis.training, cutting_train)
 
 ################################################################################
 # Conduct the permutation test and plotting the single comparisons
 ################################################################################
 
 classifier_of_interest <- "classif.svm"
-classifiers_comparison <- list( "classif.multinom", "classif.ranger", "classif.rpart", "classif.xgboost", "classif.glmnet", "classif.kknn")
-result <- list()
+classifiers_comparison <- list( "classif.multinom", "classif.ranger", "classif.xgboost", "classif.glmnet", "classif.kknn", "classif.rpart")
+# result <- list()
 
 
 for (classifier in classifiers_comparison) {
 
-  # We select those performance measures using for the evaluation
-  # numeric information: predictive.accuracy
-  # ordinal information: usercpu.time.accuracy and root.mean.square.error
-  data_openml_selected <- data_openml_filter[, c("learner.name",
-                                                 "predictive.accuracy",
-                                                 "usercpu.time.millis.training",
-                                                 "usercpu.time.millis.testing"
-  )]
-
+  data_openml_selected <- data_openml_filter
 
   # Now we select two classifiers and compare them
   # here we choose classif.rpart and classif.svm
@@ -200,15 +202,34 @@ for (classifier in classifiers_comparison) {
                                           0, 0, 0,
                                           max(dat_final$ID) + 1)
 
+
+  # Note that we can have now the problem that these two added elements are not
+  # allowed to occur already in the data, thus we check this and eventually delete
+  # this row
+
+  if (all((dat_final[dim(dat_final)[1] - 1, ] == dat_final[index_min, ])[c(1,2,3)])) {
+    dat_final <- dat_final[-c(index_min), ]
+    dat_final$ID <- seq(1:dim(dat_final)[1])
+  }
+  if (all((dat_final[dim(dat_final)[1], ] == dat_final[index_max, ])[c(1,2,3)])) {
+    dat_final <- dat_final[-c(index_max), ]
+    dat_final$ID <- seq(1:dim(dat_final)[1])
+  }
+
+
   dat_set <- dat_final
-  # saveRDS(dat_final, "dat_final.rds")
+  saveRDS(dat_set, paste0(classifier, "dat_set.rds"))
   # dat_final <- readRDS("dat_final.rds")
-
+  start_time <- Sys.time()
   result_inner <- test_two_items(dat_set)
-  result[[classifier]] <- result_inner
-  plotting_permutationtest(result_inner$permutation_test, result_inner$d_observed,
-                           add_name_file = classifier)
 
+  # result[[classifier]] <- result_inner
+  # plotting_permutationtest(result_inner$permutation_test, result_inner$d_observed,
+                           # add_name_file = classifier)
+  total_time <- Sys.time() - start_time
+
+  saveRDS(result_inner, paste0(classifier, "_result.rds"))
+  saveRDS(total_time, paste0(classifier, "_computation_time.rds"))
 }
 
 

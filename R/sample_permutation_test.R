@@ -281,6 +281,7 @@ compute_d <- function(index,
   # Computing d(x,y) for eps_0
   gurobi_permu$gurobi_model_permu$rhs <- gurobi_permu$permu_rhs_0
   result <- gurobi::gurobi(gurobi_permu$gurobi_model_permu)
+                           # params = list(Method = 0))
   if (result$status == "OPTIMAL") {
     d_return$result_eps_0 <- result$objva
   } else {
