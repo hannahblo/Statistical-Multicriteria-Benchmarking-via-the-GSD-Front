@@ -220,7 +220,7 @@ for (classifier in classifiers_comparison) {
 
 
   dat_set <- dat_final
-  saveRDS(dat_set, paste0(classifier, "dat_set.rds"))
+  saveRDS(dat_set, paste0(classifier, "_dat_set.rds"))
   # dat_final <- readRDS("dat_final.rds")
   start_time <- Sys.time()
   result_inner <- test_two_items(dat_set, iteration_number = 10)
