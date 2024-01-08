@@ -236,6 +236,18 @@ for (classifier in classifiers_comparison) {
 
 
 
+# plotting the result
+classifier_of_interest <- "classif.svm"
+classifiers_comparison <- list( "classif.multinom", "classif.ranger", "classif.xgboost", "classif.glmnet", "classif.kknn", "classif.rpart")
+
+for (classifier in classifiers_comparison) {
+  result_plot <- readRDS(paste0(classifier, "_result.rds"))
+  plotting_permutationtest(result_plot$permutation_test, result_plot$d_observed,
+                         add_name_file = classifier)
+}
+
+
+
 
 
 
