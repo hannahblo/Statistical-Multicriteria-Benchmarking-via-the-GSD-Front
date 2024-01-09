@@ -126,9 +126,9 @@ data_openml_filter$usercpu.time.millis.training <- max(data_openml_filter$usercp
 ################################################################################
 
 classifier_of_interest <- "classif.svm"
-classifiers_comparison <- list( "classif.multinom", "classif.ranger", "classif.xgboost", "classif.glmnet", "classif.kknn", "classif.rpart")
-# result <- list()
-
+# classifiers_comparison <- list( "classif.multinom", "classif.ranger", "classif.xgboost", "classif.glmnet", "classif.kknn", "classif.rpart")
+classifiers_comparison <- list( "classif.multinom", "classif.glmnet")
+# ! NOCHMAL MIT DIESEN BEIDEN LAUFEN LASSEN!!!!
 
 for (classifier in classifiers_comparison) {
 
@@ -210,10 +210,12 @@ for (classifier in classifiers_comparison) {
   # this row
 
   if (all((dat_final[dim(dat_final)[1] - 1, ] == dat_final[index_min, ])[c(1,2,3)])) {
+    dat_final[dim(dat_final)[1] - 1, ] <- dat_final[index_min, ]
     dat_final <- dat_final[-c(index_min), ]
     dat_final$ID <- seq(1:dim(dat_final)[1])
   }
   if (all((dat_final[dim(dat_final)[1], ] == dat_final[index_max, ])[c(1,2,3)])) {
+    dat_final[dim(dat_final)[1], ] <- dat_final[c(index_max), ]
     dat_final <- dat_final[-c(index_max), ]
     dat_final$ID <- seq(1:dim(dat_final)[1])
   }
@@ -236,34 +238,34 @@ for (classifier in classifiers_comparison) {
 
 
 
-# plotting the result
-classifier_of_interest <- "classif.svm"
-classifiers_comparison <- list( "classif.multinom", "classif.ranger", "classif.xgboost", "classif.glmnet", "classif.kknn", "classif.rpart")
-
-for (classifier in classifiers_comparison) {
-  result_plot <- readRDS(paste0(classifier, "_result.rds"))
-  plotting_permutationtest(result_plot$permutation_test, result_plot$d_observed,
-                         add_name_file = classifier)
-}
-
-
-# computing the test statistic values
-classifier_of_interest <- "classif.svm"
-classifiers_comparison <- list( "classif.multinom", "classif.ranger", "classif.xgboost", "classif.glmnet", "classif.kknn", "classif.rpart")
-all_eps_values <- c("result_eps_0", "result_eps_1", "result_eps_2", "result_eps_3", "result_eps_4")
-
-proportion_above_df <- as.data.frame(matrix(rep(0, 6 * 5), nrow = 5, ncol = 6), row.names = all_eps_values)
-colnames(proportion_above_df) <- unlist(classifiers_comparison)
-for (classifier in classifiers_comparison) {
-  result_classifier <- readRDS(paste0(classifier, "_result.rds"))
-
-  for (eps_value in all_eps_values) {
-    base_value <- result_classifier$d_observed[[eps_value]]
-    proportion_above_df[eps_value, classifier] <-  sum(result_classifier$permutation_test[eps_value, ] > base_value)
-  }
-}
-
-saveRDS(proportion_above_df, "final_result.rds")
+# # plotting the result
+# classifier_of_interest <- "classif.svm"
+# classifiers_comparison <- list( "classif.multinom", "classif.ranger", "classif.xgboost", "classif.glmnet", "classif.kknn", "classif.rpart")
+#
+# for (classifier in classifiers_comparison) {
+#   result_plot <- readRDS(paste0(classifier, "_result.rds"))
+#   plotting_permutationtest(result_plot$permutation_test, result_plot$d_observed,
+#                          add_name_file = classifier)
+# }
+#
+#
+# # computing the test statistic values
+# classifier_of_interest <- "classif.svm"
+# classifiers_comparison <- list( "classif.multinom", "classif.ranger", "classif.xgboost", "classif.glmnet", "classif.kknn", "classif.rpart")
+# all_eps_values <- c("result_eps_0", "result_eps_1", "result_eps_2", "result_eps_3", "result_eps_4")
+#
+# proportion_above_df <- as.data.frame(matrix(rep(0, 6 * 5), nrow = 5, ncol = 6), row.names = all_eps_values)
+# colnames(proportion_above_df) <- unlist(classifiers_comparison)
+# for (classifier in classifiers_comparison) {
+#   result_classifier <- readRDS(paste0(classifier, "_result.rds"))
+#
+#   for (eps_value in all_eps_values) {
+#     base_value <- result_classifier$d_observed[[eps_value]]
+#     proportion_above_df[eps_value, classifier] <-  sum(result_classifier$permutation_test[eps_value, ] < base_value)
+#   }
+# }
+#
+# saveRDS(proportion_above_df, "final_result.rds")
 
 
 
