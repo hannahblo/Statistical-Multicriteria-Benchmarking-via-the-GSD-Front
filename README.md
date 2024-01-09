@@ -1,6 +1,6 @@
 # Diskussion zu möglichen Algorithmen
 Benchmarking Grundlage: wir haben ein zeitliches limit für Tuning
-- randomforest (daumenregel aus breidman? paper)
+- randomforest (daumenregel aus breiman paper, 2001)
 - tree
 - logistische regression (evtl da auch elastic net auch alles beinhaltet)
 - support vector machine (ohne tuning, da gibts ein package mit heuristic, evtl systematische Nachteil)
