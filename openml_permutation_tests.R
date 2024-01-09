@@ -247,8 +247,23 @@ for (classifier in classifiers_comparison) {
 }
 
 
+# computing the test statistic values
+classifier_of_interest <- "classif.svm"
+classifiers_comparison <- list( "classif.multinom", "classif.ranger", "classif.xgboost", "classif.glmnet", "classif.kknn", "classif.rpart")
+all_eps_values <- c("result_eps_0", "result_eps_1", "result_eps_2", "result_eps_3", "result_eps_4")
 
+proportion_above_df <- as.data.frame(matrix(rep(0, 6 * 5), nrow = 5, ncol = 6), row.names = all_eps_values)
+colnames(proportion_above_df) <- unlist(classifiers_comparison)
+for (classifier in classifiers_comparison) {
+  result_classifier <- readRDS(paste0(classifier, "_result.rds"))
 
+  for (eps_value in all_eps_values) {
+    base_value <- result_classifier$d_observed[[eps_value]]
+    proportion_above_df[eps_value, classifier] <-  sum(result_classifier$permutation_test[eps_value, ] > base_value)
+  }
+}
+
+saveRDS(proportion_above_df, "final_result.rds")
 
 
 

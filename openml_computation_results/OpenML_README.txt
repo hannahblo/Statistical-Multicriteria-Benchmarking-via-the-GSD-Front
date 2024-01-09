@@ -23,9 +23,9 @@ rel_datasets <- data_all %>% filter(status == "active" &
 
 
 ### Algorithen
-glmnet = 
+glmnet = LASSO
 kknn = KNN
-multinom =
+multinom = Logistic Regression
 ranger = Random Forest
 rpart = CART
 xgboost = 
