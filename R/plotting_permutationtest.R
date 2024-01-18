@@ -22,7 +22,7 @@ plotting_permutationtest <- function(permutation_test, d_observed,
       #panel.grid.major.y = element_blank(),
       legend.position = "top",
       legend.text = element_text(family = "Roboto Mono", size = 18),
-      legend.title = element_text(face = "bold", size = 18, margin = margin(b = 25))
+      legend.title = element_text(face = "bold", size = 18, margin = 25)#margin(b = 25))
     )
 
 
@@ -55,7 +55,7 @@ plotting_permutationtest <- function(permutation_test, d_observed,
     scale_y_discrete( name = "Regularization Strength                 ", labels = c("0", "0.25","0.5", "0.75","1")) +
     ggtitle(y_title) +
     xlim(c(-0.125,0.025)) +
-    theme(axis.title.x = element_text(margin = margin(t = 20))) +
+    theme(axis.title.x = element_text(margin = 20)) +
     theme(plot.title = element_text(hjust = 0.8)) +
     scale_fill_viridis_c(name = "Value of Test Statistic", option = "F") +
     coord_cartesian(clip = "off") +
