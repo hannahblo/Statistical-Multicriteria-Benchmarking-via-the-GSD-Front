@@ -279,49 +279,64 @@ compute_d <- function(index,
   d_return <- list()
 
   # Computing d(x,y) for eps_0
-  gurobi_permu$gurobi_model_permu$rhs <- gurobi_permu$permu_rhs_0
-  result <- gurobi::gurobi(gurobi_permu$gurobi_model_permu)
-                           # params = list(Method = 0))
-  if (result$status == "OPTIMAL") {
-    d_return$result_eps_0 <- result$objva
-  } else {
-    d_return$result_eps_0 <- result
+  if (!any(is.na(gurobi_permu$permu_rhs_0))) {
+    gurobi_permu$gurobi_model_permu$rhs <- gurobi_permu$permu_rhs_0
+    result <- gurobi::gurobi(gurobi_permu$gurobi_model_permu)
+    # params = list(Method = 0))
+    if (result$status == "OPTIMAL") {
+      d_return$result_eps_0 <- result$objva
+    } else {
+      d_return$result_eps_0 <- result
+    }
   }
+
 
   # Computing d(x,y) for eps_1
-  gurobi_permu$gurobi_model_permu$rhs <- gurobi_permu$permu_rhs_1
-  result <- gurobi::gurobi(gurobi_permu$gurobi_model_permu)
-  if (result$status == "OPTIMAL") {
-    d_return$result_eps_1 <- result$objva
-  } else {
-    d_return$result_eps_1 <- result
+  if (!any(is.na(gurobi_permu$permu_rhs_1))) {
+    gurobi_permu$gurobi_model_permu$rhs <- gurobi_permu$permu_rhs_1
+    result <- gurobi::gurobi(gurobi_permu$gurobi_model_permu)
+    if (result$status == "OPTIMAL") {
+      d_return$result_eps_1 <- result$objva
+    } else {
+      d_return$result_eps_1 <- result
+    }
   }
+
 
   # Computing d(x,y) for eps_2
-  gurobi_permu$gurobi_model_permu$rhs <- gurobi_permu$permu_rhs_2
-  result <- gurobi::gurobi(gurobi_permu$gurobi_model_permu)
-  if (result$status == "OPTIMAL") {
-    d_return$result_eps_2 <- result$objva
-  } else {
-    d_return$result_eps_2 <- result
+  if (!any(is.na(gurobi_permu$permu_rhs_2))) {
+    gurobi_permu$gurobi_model_permu$rhs <- gurobi_permu$permu_rhs_2
+    result <- gurobi::gurobi(gurobi_permu$gurobi_model_permu)
+    if (result$status == "OPTIMAL") {
+      d_return$result_eps_2 <- result$objva
+    } else {
+      d_return$result_eps_2 <- result
+    }
   }
 
+
   # Computing d(x,y) for eps_3
-  gurobi_permu$gurobi_model_permu$rhs <- gurobi_permu$permu_rhs_3
-  result <- gurobi::gurobi(gurobi_permu$gurobi_model_permu)
-  if (result$status == "OPTIMAL") {
-    d_return$result_eps_3 <- result$objva
-  } else {
-    d_return$result_eps_3 <- result
+  if (!is.na(gurobi_permu$permu_rhs_3)) {
+    gurobi_permu$gurobi_model_permu$rhs <- gurobi_permu$permu_rhs_3
+    result <- gurobi::gurobi(gurobi_permu$gurobi_model_permu)
+    if (result$status == "OPTIMAL") {
+      d_return$result_eps_3 <- result$objva
+    } else {
+      d_return$result_eps_3 <- result
+    }
   }
+
   # Computing d(x,y) for eps_4
-  gurobi_permu$gurobi_model_permu$rhs <- gurobi_permu$permu_rhs_4
-  result <- gurobi::gurobi(gurobi_permu$gurobi_model_permu)
-  if (result$status == "OPTIMAL") {
-    d_return$result_eps_4 <- result$objva
-  } else {
-    d_return$result_eps_4 <- result
+  if (!any(is.na(gurobi_permu$permu_rhs_4))) {
+    gurobi_permu$gurobi_model_permu$rhs <- gurobi_permu$permu_rhs_4
+    result <- gurobi::gurobi(gurobi_permu$gurobi_model_permu)
+    if (result$status == "OPTIMAL") {
+      d_return$result_eps_4 <- result$objva
+    } else {
+      d_return$result_eps_4 <- result
+    }
   }
+
 
   return(d_return)
 }
