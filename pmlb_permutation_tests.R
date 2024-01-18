@@ -1,8 +1,25 @@
 # This file corresponds to the pmlb analysis
 
+# Analyzing classifiers based on data sets, evaluations, and classifiers
+# provided by
+# TODO Bitte kurze Beschreibung woher die Daten kommen
 
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+# TODO
+# TODO
+# TODO
+# TODO @Hannah in den files noch erklären wie umgang mit na in eps_0 also bei
+# beschreibung
 
-
+# This code is with adaptation copied from
+# 1.
+# Hannah Blocher, Georg Schollmeyer, Christoph Jansen, and Malte Nalenz. Depth functions for
+# Christoph Jansen, Georg Schollmeyer, Hannah Blocher, Julian Rodemann and Thomas Augustin (2023):
+# Robust statistical comparison of random variables with locally varying scale of measurement.
+# In: Proceedings of the Thirty-Ninth Conference on Uncertainty in Artificial Intelligence (UAI 2023).
+# Proceedings of Machine Learning Research, vol. 216. PMLR.
+# and the code provided by
+# https://github.com/hannahblo/Robust_GSD_Tests (accessed: 18.01.2024)
 
 
 ################################################################################
@@ -21,7 +38,6 @@ library(ggridges) # visualization
 library(latex2exp) # for gamma (and epsilon) symbols
 library(RColorBrewer) # color palettes
 library(rcartocolor) # color gradients
-library(OpenML) # downloading data from openml
 library(dplyr)
 library(farff)
 library(reshape2)
@@ -30,7 +46,7 @@ library(parallel)
 source("R/constraints_r1_r2.R") # contains the functions compute_constraints...
 source("R/sample_permutation_test.R") # permutation test, sample etc
 source("R/plotting_permutationtest.R") # plot function
-source("R/test_two_items.R")
+source("R/test_two_items.R") # main function summarizing the computation
 ################################################################################
 # Prepare Data Set: PMLB
 ################################################################################
@@ -121,6 +137,7 @@ for (classifier in classifiers_comparison) {
   index_min <- which(dat_final$numeric == min(dat_final$numeric))[1]
   # dat_final[index_min, ]
 
+
   # Add minimal and maximal at the bottom of the matrix
 
   # ATTENTION: It is very important for the following analysis that the
@@ -146,6 +163,10 @@ for (classifier in classifiers_comparison) {
     dat_final[dim(dat_final)[1] - 1, ] <- dat_final[index_min, ]
     dat_final <- dat_final[-c(index_min), ]
     dat_final$ID <- seq(1:dim(dat_final)[1])
+
+    # We have to update index_max as now the data frame changed
+    # note that the added maximum is by default behind [1]
+    index_max <- which(dat_final$numeric == max(dat_final$numeric))[1]
   }
   if (all((dat_final[dim(dat_final)[1], ] == dat_final[index_max, ])[c(1,2,3)])) {
     dat_final[dim(dat_final)[1], ] <- dat_final[c(index_max), ]
@@ -158,7 +179,13 @@ for (classifier in classifiers_comparison) {
   saveRDS(dat_set, paste0(classifier, "_dat_set.rds"))
   # dat_final <- readRDS("dat_final.rds")
   start_time <- Sys.time()
-  result_inner <- test_two_items(dat_set, iteration_number = 1000)
+  result_inner <- test_two_items(dat_set, iteration_number = 200,
+                                 seed_number = 2983754,
+                                 eps_0 = 0,
+                                 eps_1 = 0.5,
+                                 eps_2 = NA,
+                                 eps_3 = NA,
+                                 eps_4 = NA)
 
   # result[[classifier]] <- result_inner
   # plotting_permutationtest(result_inner$permutation_test, result_inner$d_observed,
@@ -170,10 +197,12 @@ for (classifier in classifiers_comparison) {
 }
 
 
-
-# # plotting the result
-# classifier_of_interest <- "classif.svm"
-# classifiers_comparison <- list( "classif.multinom", "classif.ranger", "classif.xgboost", "classif.glmnet", "classif.kknn", "classif.rpart")
+################################################################################
+# Result and Plotting
+################################################################################
+# # plotting the result of the pairwise comparisons
+# classifier_of_interest <- "cre"
+# classifiers_comparison <- list("svmRadial", "J48", "ranger", "knn", "glmnet")
 #
 # for (classifier in classifiers_comparison) {
 #   result_plot <- readRDS(paste0(classifier, "_result.rds"))
@@ -183,9 +212,9 @@ for (classifier in classifiers_comparison) {
 #
 #
 # # computing the test statistic values
-# classifier_of_interest <- "classif.svm"
-# classifiers_comparison <- list( "classif.multinom", "classif.ranger", "classif.xgboost", "classif.glmnet", "classif.kknn", "classif.rpart")
-# all_eps_values <- c("result_eps_0", "result_eps_1", "result_eps_2", "result_eps_3", "result_eps_4")
+# classifier_of_interest <- "cre"
+# classifiers_comparison <- list("svmRadial", "J48", "ranger", "knn", "glmnet")
+# all_eps_values <- c("result_eps_0", "result_eps_1")
 #
 # proportion_above_df <- as.data.frame(matrix(rep(0, 6 * 5), nrow = 5, ncol = 6), row.names = all_eps_values)
 # colnames(proportion_above_df) <- unlist(classifiers_comparison)
@@ -199,3 +228,9 @@ for (classifier in classifiers_comparison) {
 # }
 #
 # saveRDS(proportion_above_df, "final_result.rds")
+
+
+
+# Constructing the graph representing all pairwise comparisons at once
+# therfore we have to compute the reverse (switching classifier and classifier_of_interest
+# position) observed minimal difference
