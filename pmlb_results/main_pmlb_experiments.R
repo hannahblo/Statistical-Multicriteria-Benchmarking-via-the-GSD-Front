@@ -37,7 +37,7 @@ datasets <- list()
 for(k in seq_len(length(classification_dataset_names))){
   index <- which(summary_stats[,1]==classification_dataset_names[k])
   metadat <- summary_stats[index,]
-  if( metadat$n_instances %in% c(50:1000) &
+  if( metadat$n_instances %in% c(40:1000) &
   metadat$n_classes==2 &
   metadat$task== "classification" &
   metadat$n_features <= 100){
@@ -192,8 +192,6 @@ for(k in seq_len(length(datasets))){
   accuracies_noisy_x_list[[k]] = accuracies_noisy_x
 }
 
-# post processing: remove corrupted dataset, where none of the classifiers produced outputs
-results = results[-48,]
 
 
 # stack results:
