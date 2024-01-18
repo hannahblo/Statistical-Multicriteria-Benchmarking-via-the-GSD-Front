@@ -1,4 +1,11 @@
-test_two_items <- function(dat_set, iteration_number = 1000,
+test_two_items <- function(dat_set,
+                           iteration_number = 1000,
+                           seed_number = 2893,
+                           eps_0 = 0,
+                           eps_1 = 0.25,
+                           eps_2 = 0.5,
+                           eps_3 = 0.75,
+                           eps_4 = 1,
                            mc.cores = 1) {
 
   ### Step 1: Compute the constraints given by R1 and R2
@@ -29,11 +36,7 @@ test_two_items <- function(dat_set, iteration_number = 1000,
 
   ### Step 3: Compute the permutation test based on four different eps values
   # In paper: See Section 5.2
-  eps_0 <- 0
-  eps_1 <- 0.25
-  eps_2 <- 0.5
-  eps_3 <- 0.75
-  eps_4 <- 1
+
 
   # the general gurobi model
   gurobi_permu <- compute_gurobi_permu(eps_0, eps_1, eps_2, eps_3, eps_4,
@@ -77,7 +80,7 @@ test_two_items <- function(dat_set, iteration_number = 1000,
 
 
   iteration_seq <- seq(1, iteration_number)
-  set.seed(2893)
+  set.seed(seed_number)
   start_time <- Sys.time()
   permutation_test <- sapply(iteration_seq, FUN = compute_d,
                              dat_set_permu = dat_set_permu,
