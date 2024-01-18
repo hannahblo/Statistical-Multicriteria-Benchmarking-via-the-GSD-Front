@@ -232,6 +232,10 @@ for (classifier in classifiers_comparison) {
     dat_final[dim(dat_final)[1] - 1, ] <- dat_final[index_min, ]
     dat_final <- dat_final[-c(index_min), ]
     dat_final$ID <- seq(1:dim(dat_final)[1])
+
+    # We have to update index_max as now the data frame changed
+    # note that the added maximum is by default behind [1]
+    index_max <- which(dat_final$numeric == max(dat_final$numeric))[1]
   }
   if (all((dat_final[dim(dat_final)[1], ] == dat_final[index_max, ])[c(1,2,3)])) {
     dat_final[dim(dat_final)[1], ] <- dat_final[c(index_max), ]
@@ -376,6 +380,10 @@ for (classifier in classifiers_comparison) {
     dat_final[dim(dat_final)[1] - 1, ] <- dat_final[index_min, ]
     dat_final <- dat_final[-c(index_min), ]
     dat_final$ID <- seq(1:dim(dat_final)[1])
+
+    # We have to update index_max as now the data frame changed
+    # note that the added maximum is by default behind [1]
+    index_max <- which(dat_final$numeric == max(dat_final$numeric))[1]
   }
   if (all((dat_final[dim(dat_final)[1], ] == dat_final[index_max, ])[c(1,2,3)])) {
     dat_final[dim(dat_final)[1], ] <- dat_final[c(index_max), ]
