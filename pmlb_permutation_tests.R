@@ -1,8 +1,14 @@
-# This file corresponds to the pmlb analysis
-
-# Analyzing classifiers based on data sets, evaluations, and classifiers
-# provided by
-# TODO Bitte kurze Beschreibung woher die Daten kommen
+#############
+## PMLB datasets
+# This file (and helpers) corresponds to the pmlb analysis (see section 5.1 in the paper)
+# We select all datasets from PMLB benchmarking suite (https://epistasislab.github.io/pmlb/)
+# for binary classification tasks with 40 to 1000 observations and less than
+# 100 features (see lines 36-49 in file "main_pmlb_experiments.R") (62 in total).
+# The latter file runs 10-fold cross-validation on each considered classifier on 
+# each of the 62 datasets from the PMLB benchmark suite. It returns i) classical 
+# accuracies, ii) accuracies with perturbed x and iii) accuracies with perturbed y.
+# the resulting data frames has i) to iii) as columns and is loaded in line 56
+###########
 
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 # TODO
