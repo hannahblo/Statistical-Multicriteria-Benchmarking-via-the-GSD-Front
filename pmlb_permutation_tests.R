@@ -158,21 +158,27 @@ for (classifier in classifiers_comparison) {
   # Note that we can have now the problem that these two added elements are not
   # allowed to occur already in the data, thus we check this and eventually delete
   # this row
+  for (i in seq(1, length(index_min))) {
+    if (all((dat_final[dim(dat_final)[1] - 1, ] == dat_final[index_min[i], ])[c(1,2,3)])) {
+      dat_final[dim(dat_final)[1] - 1, ] <- dat_final[index_min[i], ]
+      dat_final <- dat_final[-c(index_min[i]), ]
+      dat_final$ID <- seq(1:dim(dat_final)[1])
 
-  if (all((dat_final[dim(dat_final)[1] - 1, ] == dat_final[index_min, ])[c(1,2,3)])) {
-    dat_final[dim(dat_final)[1] - 1, ] <- dat_final[index_min, ]
-    dat_final <- dat_final[-c(index_min), ]
-    dat_final$ID <- seq(1:dim(dat_final)[1])
+      # We have to update index_max as now the data frame changed
+      # note that we want to compare to the last row and therefore we have
+      # to delete this one in index_max
+      index_max <- which(dat_final$numeric == max(dat_final$numeric))
+      index_max <- index_max[-length(index_max)]
+    }
+  }
+  for (i in seq(1, length(index_max))) {
+    if (all((dat_final[dim(dat_final)[1], ] == dat_final[index_max[i], ])[c(1,2,3)])) {
+      dat_final[dim(dat_final)[1], ] <- dat_final[c(index_max[i]), ]
+      dat_final <- dat_final[-c(index_max[i]), ]
+      dat_final$ID <- seq(1:dim(dat_final)[1])
+    }
+  }
 
-    # We have to update index_max as now the data frame changed
-    # note that the added maximum is by default behind [1]
-    index_max <- which(dat_final$numeric == max(dat_final$numeric))[1]
-  }
-  if (all((dat_final[dim(dat_final)[1], ] == dat_final[index_max, ])[c(1,2,3)])) {
-    dat_final[dim(dat_final)[1], ] <- dat_final[c(index_max), ]
-    dat_final <- dat_final[-c(index_max), ]
-    dat_final$ID <- seq(1:dim(dat_final)[1])
-  }
 
 
   dat_set <- dat_final
