@@ -81,7 +81,7 @@ data_pmlb$results_noisy_y_stacked <- findInterval(data_pmlb$results_noisy_y_stac
 ################################################################################
 
 classifier_of_interest <- "cre"
-classifiers_comparison <- list("svmRadial", "J48", "ranger", "knn", "glmnet")
+classifiers_comparison <- list("ranger", "knn", "glmnet")  #"svmRadial", "J48",
 
 for (classifier in classifiers_comparison) {
 
@@ -138,9 +138,9 @@ for (classifier in classifiers_comparison) {
   # min(dat_final$numeric)
   # max(dat_final$numeric)
 
-  index_max <- which(dat_final$numeric == max(dat_final$numeric))[1]
+  index_max <- which(dat_final$numeric == max(dat_final$numeric))
   # dat_final[index_max, ]
-  index_min <- which(dat_final$numeric == min(dat_final$numeric))[1]
+  index_min <- which(dat_final$numeric == min(dat_final$numeric))
   # dat_final[index_min, ]
 
 
@@ -151,12 +151,12 @@ for (classifier in classifiers_comparison) {
   # represents the maximal value
   dat_final[dim(dat_final)[1] + 1, ] <- c(min(dat_final$ordinal_1),
                                           min(dat_final$ordinal_2),
-                                          dat_final[index_min, 3],
+                                          dat_final[index_min[1], 3],
                                           0, 0, 0,
                                           max(dat_final$ID) + 1)
   dat_final[dim(dat_final)[1] + 1, ] <- c(max(dat_final$ordinal_1),
                                           max(dat_final$ordinal_2),
-                                          dat_final[index_max, 3],
+                                          dat_final[index_max[1], 3],
                                           0, 0, 0,
                                           max(dat_final$ID) + 1)
 
