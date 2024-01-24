@@ -145,12 +145,12 @@ for (classifier in classifiers_comparison) {
   # represents the maximal value
   dat_final[dim(dat_final)[1] + 1, ] <- c(min(dat_final$ordinal_1),
                                           min(dat_final$ordinal_2),
-                                          dat_final[index_min, 3],
+                                          dat_final[index_min[i], 3],
                                           0, 0, 0,
                                           max(dat_final$ID) + 1)
   dat_final[dim(dat_final)[1] + 1, ] <- c(max(dat_final$ordinal_1),
                                           max(dat_final$ordinal_2),
-                                          dat_final[index_max, 3],
+                                          dat_final[index_max[i], 3],
                                           0, 0, 0,
                                           max(dat_final$ID) + 1)
 
