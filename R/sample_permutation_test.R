@@ -316,7 +316,7 @@ compute_d <- function(index,
 
 
   # Computing d(x,y) for eps_3
-  if (!is.na(gurobi_permu$permu_rhs_3)) {
+  if (!any(is.na(gurobi_permu$permu_rhs_3))) {
     gurobi_permu$gurobi_model_permu$rhs <- gurobi_permu$permu_rhs_3
     result <- gurobi::gurobi(gurobi_permu$gurobi_model_permu)
     if (result$status == "OPTIMAL") {
