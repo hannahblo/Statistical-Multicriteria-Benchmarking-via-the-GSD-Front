@@ -99,4 +99,6 @@ The **PMLB** test compares algorithm named "cre" (classifier of interest in the 
 ## References:
 - Van Rijn, J. N., Bischl, B., Torgo, L., Gao, B., Umaashankar, V., Fischer, S., Winter, P., Wiswedel, B., Berthold, M. R., and Vanschoren, J. Openml: A collaborative science platform. In Machine Learning and Knowledge Discovery in Databases: European Conference, ECML PKDD 2013, Prague, Czech Republic, September 23-27, 2013, Proceedings, Part III 13, pp. 645–649. Springer, 2013
 - Olson, R. S., La Cava, W., Orzechowski, P., Urbanowicz, R. J., and Moore, J. H. Pmlb: a large benchmark suite for machine learning evaluation and comparison. BioData Mining, 10:36, 2017
+- Blocher, H., Schollmeyer, G., Jansen, C. and Nalenz, M. (2023): Depth Functions for Partial Orders with a Descriptive Analysis of Machine Learning Algorithms.  In: Proceedings of the Thirteenth International Symposium on Imprecise Probabilities: Theories and Applications (ISIPTA '23). Proceedings of Machine Learning Research, vol. 215. PMLR.
+- Jansen, C., Schollmeyer, G., Blocher, H., Rodemann, J., and Augustin, T. (2023): Robust statistical comparison of random variables with locally varying scale of measurement. In: Proceedings of the Thirty-Ninth Conference on Uncertainty in Artificial Intelligence (UAI 2023). Proceedings of Machine Learning Research, vol. 216. PMLR.
 
