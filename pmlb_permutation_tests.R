@@ -1,8 +1,14 @@
-# This file corresponds to the pmlb analysis
-
-# Analyzing classifiers based on data sets, evaluations, and classifiers
-# provided by
-# TODO Bitte kurze Beschreibung woher die Daten kommen
+#############
+## PMLB datasets
+# This file (and helpers) corresponds to the pmlb analysis (see section 5.1 in the paper)
+# We select all datasets from PMLB benchmarking suite (https://epistasislab.github.io/pmlb/)
+# for binary classification tasks with 40 to 1000 observations and less than
+# 100 features (see lines 36-49 in file "main_pmlb_experiments.R") (62 in total).
+# The latter file runs 10-fold cross-validation on each considered classifier on 
+# each of the 62 datasets from the PMLB benchmark suite. It returns i) classical 
+# accuracies, ii) accuracies with perturbed x and iii) accuracies with perturbed y.
+# the resulting data frames has i) to iii) as columns and is loaded in line 56
+###########
 
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 # TODO
@@ -75,7 +81,7 @@ data_pmlb$results_noisy_y_stacked <- findInterval(data_pmlb$results_noisy_y_stac
 ################################################################################
 
 classifier_of_interest <- "cre"
-classifiers_comparison <- list("svmRadial", "J48", "ranger", "knn", "glmnet")
+classifiers_comparison <- list("ranger", "knn", "glmnet")  #"svmRadial", "J48",
 
 for (classifier in classifiers_comparison) {
 
@@ -132,9 +138,9 @@ for (classifier in classifiers_comparison) {
   # min(dat_final$numeric)
   # max(dat_final$numeric)
 
-  index_max <- which(dat_final$numeric == max(dat_final$numeric))[1]
+  index_max <- which(dat_final$numeric == max(dat_final$numeric))
   # dat_final[index_max, ]
-  index_min <- which(dat_final$numeric == min(dat_final$numeric))[1]
+  index_min <- which(dat_final$numeric == min(dat_final$numeric))
   # dat_final[index_min, ]
 
 
@@ -145,12 +151,12 @@ for (classifier in classifiers_comparison) {
   # represents the maximal value
   dat_final[dim(dat_final)[1] + 1, ] <- c(min(dat_final$ordinal_1),
                                           min(dat_final$ordinal_2),
-                                          dat_final[index_min[i], 3],
+                                          dat_final[index_min[1], 3],
                                           0, 0, 0,
                                           max(dat_final$ID) + 1)
   dat_final[dim(dat_final)[1] + 1, ] <- c(max(dat_final$ordinal_1),
                                           max(dat_final$ordinal_2),
-                                          dat_final[index_max[i], 3],
+                                          dat_final[index_max[1], 3],
                                           0, 0, 0,
                                           max(dat_final$ID) + 1)
 

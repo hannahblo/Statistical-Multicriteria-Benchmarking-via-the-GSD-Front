@@ -11,7 +11,8 @@
 #ELASTIC NET
 #KNN
 
-
+# source helper functions
+source("pmlb_results/helper_pmlb_experiments.R")
 
 # for compressed rule ensemble classifier (CRE)
 source("pmlb_results/make_method_cre.R")
@@ -36,7 +37,7 @@ datasets <- list()
 for(k in seq_len(length(classification_dataset_names))){
   index <- which(summary_stats[,1]==classification_dataset_names[k])
   metadat <- summary_stats[index,]
-  if( metadat$n_instances %in% c(50:1000) &
+  if( metadat$n_instances %in% c(40:1000) &
   metadat$n_classes==2 &
   metadat$task== "classification" &
   metadat$n_features <= 100){
@@ -191,8 +192,6 @@ for(k in seq_len(length(datasets))){
   accuracies_noisy_x_list[[k]] = accuracies_noisy_x
 }
 
-# post processing: remove corrupted dataset, where none of the classifiers produced outputs
-results = results[-48,]
 
 
 # stack results:
@@ -212,45 +211,3 @@ final_res = cbind(results_clean_stacked, results_noisy_x_stacked, results_noisy_
 #saveRDS(final_res,file = "final_results.RDS")
 
 
-## needed own functions:
-
-
-compute_k_folds <- function(n_row,k=10,set.seed=TRUE,seed=12345678){
-  result <- rep((1:k),ceiling(n_row/k))
-  result <- result[(1:n_row)]
-  if(set.seed){set.seed(seed)}
-  return(sample(result))
-}
-
-
-compute_accuracy <- function(predictions,true_labels){
-  if(method == "cre"){
-    preds_cre = ifelse(predictions > 0.5, 1,0) %>% as.factor
-    result <- mean(preds_cre==true_labels)
-  }else{
-    result <- mean(predictions==true_labels)
-  }
-  return(result)
-}
-
-
-perturbate_y <- function(y,p_percent=20,set.seed=TRUE,seed=12345678){
-  if(set.seed){set.seed(seed)}
-  indexs <- which( sample(c(1,0),size=length(y),prob=c(p_percent/100,(100-p_percent)/100),replace=TRUE)==1)
-  length_indexs <- length(indexs)
-  y[indexs] <- sample(y, size=length_indexs)
-  return(y)
-}
-
-
-perturbate_x <- function(x,p_percent=20,set.seed=TRUE,seed=12345678){
-  if(set.seed){set.seed(seed)}
-  
-  for(k in seq_len(ncol(x))){
-    indexs <- which( sample(c(1,0),size=nrow(x),prob=c(p_percent/100,(100-p_percent)/100),replace=TRUE)==1)
-    length_indexs <- length(indexs)
-    x[indexs,k] <- sample(x[,k], size=length_indexs)
-  }
-  return(x)
-}
-########

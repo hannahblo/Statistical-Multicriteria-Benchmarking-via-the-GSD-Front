@@ -210,7 +210,7 @@ for (classifier in classifiers_comparison) {
   # Add minimal and maximal at the bottom of the matrix
 
   # ATTENTION: It is very important for the following analysis that the
-  # the input at the second largest row is the minimal value and the largest row
+  # input at the second largest row is the minimal value and the largest row
   # represents the maximal value
   dat_final[dim(dat_final)[1] + 1, ] <- c(min(dat_final$ordinal_1),
                                           min(dat_final$ordinal_2),
