@@ -1,12 +1,10 @@
 # TODOS:
-_setup_session nochmal durchgehen
-ordnere permutations statt computation
-
-Julian bitte nochmal pmlb durchlesen und erklären was die einzelnen Files machen--> siehe TODOOOOS und die Laufzeit eintragen
-
-Julian bitte setup session anpassen an das was du brauchst
-
-Julian bitte noch bei den Notationen die TODOOS machen. Danke :)
+- _setup_session nochmal durchgehen
+- ordnere permutations statt computation
+- repo name ändern
+- @Julian bitte nochmal pmlb durchlesen und erklären was die einzelnen Files machen--> siehe TODOOOOS und die Laufzeit eintragen
+- @Julian bitte setup session anpassen an das was du brauchst
+- @Julian bitte noch bei den Notationen die TODOOS machen. Danke :)
 
 # Statistical Multicriteria Benchmarking via the GSD-Front
 
