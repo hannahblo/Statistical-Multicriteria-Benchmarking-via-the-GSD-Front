@@ -86,13 +86,13 @@ The files openml_permutation_tests.R and pmlb_permutation_tests.R produce the fo
 The **OpenML** test compares the algorithm named "classif.svm" (classifier of interest in the following) against "classif.multinom", "classif.ranger", "classif.xgboost", "classif.glmnet", "classif.kknn", and "classif.rpart". In the following # is a placeholder for "classif.multinom", "classif.ranger", "classif.xgboost", "classif.glmnet", "classif.kknn", and "classif.rpart". * and ° are two placeholders for "classif.svm", "classif.multinom", "classif.ranger", "classif.xgboost", "classif.glmnet", "classif.kknn", and "classif.rpart".\
 \
 The **PMLB** test compares algorithm named "cre" (classifier of interest in the following against "svmRadial", "J48", "ranger", "knn", and "glmnet". In the following # is a placeholder for "svmRadial", "J48", "ranger", "knn", or "glmnet". * and ° are two placeholders for "cre" "svmRadial", "J48", "ranger", "knn", and "glmnet".
-- #_result.rds stores the result of the empirical as well as the permutated test statistic where we compute the expectation of # against the classifier of interest.
-- #_computation_time.rds
-- #_dat_set.rds
+- #_result.rds stores the result of the empirical as well as the permutated test statistic where we compute the expectation of # minus the classifier of interest.
+- #_computation_time.rds stores the computation time to obtain #_result.rds
+- #_dat_set.rds stores the used sorted data set (here group_a corresponds to the classifier of interest and # to group_b)
 - #_regularization.jpg: TODOOOOOOO
 - #_values_teststatistic.jpg TODOOOOOOOO
-- *_°_result_all.rds
-- *_°_computation_time.rds
+- *_°_result_all.rds stores the result of the empirical as well as the permutated test statistic where we compute the expectation of * minus °
+- *_°_computation_time.rds stores the time to compute *_°_result_all.rds
 
 ## References:
 - Van Rijn, J. N., Bischl, B., Torgo, L., Gao, B., Umaashankar, V., Fischer, S., Winter, P., Wiswedel, B., Berthold, M. R., and Vanschoren, J. Openml: A collaborative science platform. In Machine Learning and Knowledge Discovery in Databases: European Conference, ECML PKDD 2013, Prague, Czech Republic, September 23-27, 2013, Proceedings, Part III 13, pp. 645–649. Springer, 2013
