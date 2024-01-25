@@ -6,7 +6,8 @@ test_two_items <- function(dat_set,
                            eps_2 = 0.5,
                            eps_3 = 0.75,
                            eps_4 = 1,
-                           mc.cores = 1) {
+                           mc.cores = 1,
+                           reverse = FALSE) {
 
   ### Step 1: Compute the constraints given by R1 and R2
   # see Article Equation (12) in Section 7
@@ -49,18 +50,23 @@ test_two_items <- function(dat_set,
 
   # Computation of the test statistic values based on the input
   # start_time_d_obs  <- Sys.time()
-  d_observed <- compute_d(1,
-                          dat_set_permu,
-                          gurobi_permu,
-                          permutate_obs = FALSE,
-                          reverse_objective = FALSE)
-  # d_observed <- compute_d(1,
-  #                         dat_set_permu,
-  #                         gurobi_permu,
-  #                         permutate_obs = FALSE,
-  #                         reverse_objective = TRUE)
-  # total_time_d_obs <- Sys.time() - start_time_d_obs
-  # saveRDS(d_observed, file = "d_observed_derma.rds")
+  if (!reverse) {
+    d_observed <- compute_d(1,
+                            dat_set_permu,
+                            gurobi_permu,
+                            permutate_obs = FALSE,
+                            reverse_objective = FALSE)
+  }
+  if (reverse) {
+    d_observed <- compute_d(1,
+                            dat_set_permu,
+                            gurobi_permu,
+                            permutate_obs = FALSE,
+                            reverse_objective = TRUE)
+    # total_time_d_obs <- Sys.time() - start_time_d_obs
+    # saveRDS(d_observed, file = "d_observed_derma.rds")
+  }
+
 
   ### Test statistic computation based on iteration_number permuted observations
   # Note that gurobi already parallels, thus parallelism does not necessarily
@@ -90,6 +96,7 @@ test_two_items <- function(dat_set,
   # saveRDS(permutation_test, file = "permutation_test_derma.rds")
   # saveRDS(total_time_permu, file = "total_time_permu_derma.rds")
 
-  return(c(permutation_test = list(permutation_test), d_observed = list(d_observed)))
+  return(c(permutation_test = list(permutation_test),
+           d_observed = list(d_observed)))
 
 }
