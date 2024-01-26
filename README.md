@@ -17,9 +17,7 @@ The structure of the repository is as follows:
 - Folder R/ contains the needed functions (permutation test, sampling, definition of the constraint matrix, plotting etc) for the analysis.
 - Folder pmbl_results/ contains the results as well as the code of the evaluations (robustified) accuracy on the PMLB suite
 - Folder openml_permutation_results contains all the results provided by the file openml_permutation_tests.R (Note that they are not automatically saved in this folder, but copied to it.)
-- Folder pmlb_permutation_results_seed2983754 contains all the results provided by the file pmlb_permutation_tests.R with seed 2983754 (Note that they are not automatically saved in this folder, but copied to it.)
-- Folder pmlb_permutation_results_seed29 contains all the results provided by the file pmlb_permutation_tests.R with seed 29 (Note that they are not automatically saved in this folder, but copied to it.)
-- Folder pmlb_permutation_results_seed658 contains all the results provided by the file pmlb_permutation_tests.R with seed 658 (Note that they are not automatically saved in this folder, but copied to it.)
+- Folder pmlb_permutation_results contains all the results provided by the file pmlb_permutation_tests.R (Note that they are not automatically saved in this folder, but copied to it.)
 
 The code was tested with
 - R version 4.2.1
@@ -94,10 +92,12 @@ The **PMLB** test compares algorithm named "cre" (classifier of interest in the 
 - #_values_teststatistic.jpg TODOOOOOOOO
 - *_°_result_all.rds stores the result of the empirical as well as the permutated test statistic where we compute the expectation of * minus °
 - *_°_computation_time.rds stores the time to compute *_°_result_all.rds
+- proportion_below_df.rds stores the number of permutation results that are below the observed one
+- dat_openml_filter.rds stores the downloaded OpenMl data (download was done 26.01.2024)
+- dat_final.rds stores the rescaled OpenML data (saved 26.01.2024)
 
 ## References:
 - Van Rijn, J. N., Bischl, B., Torgo, L., Gao, B., Umaashankar, V., Fischer, S., Winter, P., Wiswedel, B., Berthold, M. R., and Vanschoren, J. Openml: A collaborative science platform. In Machine Learning and Knowledge Discovery in Databases: European Conference, ECML PKDD 2013, Prague, Czech Republic, September 23-27, 2013, Proceedings, Part III 13, pp. 645–649. Springer, 2013
 - Olson, R. S., La Cava, W., Orzechowski, P., Urbanowicz, R. J., and Moore, J. H. Pmlb: a large benchmark suite for machine learning evaluation and comparison. BioData Mining, 10:36, 2017
-- Blocher, H., Schollmeyer, G., Jansen, C. and Nalenz, M. (2023): Depth Functions for Partial Orders with a Descriptive Analysis of Machine Learning Algorithms.  In: Proceedings of the Thirteenth International Symposium on Imprecise Probabilities: Theories and Applications (ISIPTA '23). Proceedings of Machine Learning Research, vol. 215. PMLR.
-- Jansen, C., Schollmeyer, G., Blocher, H., Rodemann, J., and Augustin, T. (2023): Robust statistical comparison of random variables with locally varying scale of measurement. In: Proceedings of the Thirty-Ninth Conference on Uncertainty in Artificial Intelligence (UAI 2023). Proceedings of Machine Learning Research, vol. 216. PMLR.
+- This code is an adapted version of an existing code. Due to the double-blind review process, we do not include those references here. The references will be included after the review process.
 
