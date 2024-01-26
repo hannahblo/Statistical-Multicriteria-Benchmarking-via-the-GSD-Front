@@ -303,8 +303,8 @@ classifiers_all <- list( "classif.svm",  "classif.multinom", "classif.ranger", "
 for (k in seq(1, length(classifiers_all))) {
   for (m in seq(1, length(classifiers_all))[-k]) {
 
-    classifier <- classifiers_all[k]
-    classifier_of_interest <- classifiers_all[m]
+    classifier <- classifiers_all[m]
+    classifier_of_interest <- classifiers_all[k]
 
 
     data_openml_selected <- data_openml_filter

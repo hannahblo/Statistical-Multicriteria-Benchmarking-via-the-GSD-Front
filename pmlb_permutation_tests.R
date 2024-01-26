@@ -243,8 +243,8 @@ classifiers_all <- list("cre", "svmRadial", "J48", "ranger", "knn", "glmnet")
 for (k in seq(1, length(classifiers_all))) {
   for (m in seq(1, length(classifiers_all))[-k]) {
 
-    classifier <- classifiers_all[k]
-    classifier_of_interest <- classifiers_all[m]
+    classifier <- classifiers_all[m]
+    classifier_of_interest <- classifiers_all[k]
 
 
     data_pmlb_selected <- data_pmlb
@@ -350,7 +350,12 @@ for (k in seq(1, length(classifiers_all))) {
 
     dat_set <- dat_final
     start_time <- Sys.time()
-    result_inner <- test_two_items(dat_set, iteration_number = 1)
+    result_inner <- test_two_items(dat_set, iteration_number = 1,
+                                   eps_0 = 0,
+                                   eps_1 = NA,
+                                   eps_2 = NA,
+                                   eps_3 = NA,
+                                   eps_4 = NA)
 
     total_time <- Sys.time() - start_time
 
@@ -376,6 +381,7 @@ for (k in seq(1, length(classifiers_all))) {
 
   }
 }
+
 
 # df_eps_p explanation:
 # an entry at with row x (correpsonding to algorithm x) and column y (corresponding to algorithm y)
