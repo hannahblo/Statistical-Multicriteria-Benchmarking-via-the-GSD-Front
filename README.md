@@ -2,6 +2,7 @@
 - @Julian bitte nochmal pmlb durchlesen und erklären was die einzelnen Files machen--> siehe TODOOOOS und die Laufzeit eintragen
 - @Julian bitte setup session anpassen an das was du brauchst
 - @Julian bitte noch bei den Notationen die TODOOS machen. Danke :)
+- @Julian: brauchst du das .Rproj Objekt? Falls nein gerne löschen, da das noch den Namen des alten Repos trägt.
 - @alle: Achtung, wenn eine der Permutationsläufe im PMLB nicht verwendet wird, dann müssen wir das in der Erklärung (direkt nach Introduction) noch rausschmeißen.
 
 # Statistical Multicriteria Benchmarking via the GSD-Front
@@ -16,9 +17,9 @@ The structure of the repository is as follows:
 - Folder R/ contains the needed functions (permutation test, sampling, definition of the constraint matrix, plotting etc) for the analysis.
 - Folder pmbl_results/ contains the results as well as the code of the evaluations (robustified) accuracy on the PMLB suite
 - Folder openml_permutation_results contains all the results provided by the file openml_permutation_tests.R (Note that they are not automatically saved in this folder, but copied to it.)
-- Folder pmlb_permutation_results_2983754 contains all the results provided by the file pmlb_permutation_tests.R with seed 2983754 (Note that they are not automatically saved in this folder, but copied to it.)
-- Folder pmlb_permutation_results_29 contains all the results provided by the file pmlb_permutation_tests.R with seed 29 (Note that they are not automatically saved in this folder, but copied to it.)
-- Folder pmlb_permutation_results_658 contains all the results provided by the file pmlb_permutation_tests.R with seed 658 (Note that they are not automatically saved in this folder, but copied to it.)
+- Folder pmlb_permutation_results_seed2983754 contains all the results provided by the file pmlb_permutation_tests.R with seed 2983754 (Note that they are not automatically saved in this folder, but copied to it.)
+- Folder pmlb_permutation_results_seed29 contains all the results provided by the file pmlb_permutation_tests.R with seed 29 (Note that they are not automatically saved in this folder, but copied to it.)
+- Folder pmlb_permutation_results_seed658 contains all the results provided by the file pmlb_permutation_tests.R with seed 658 (Note that they are not automatically saved in this folder, but copied to it.)
 
 The code was tested with
 - R version 4.2.1
