@@ -6,21 +6,9 @@
 
 
 
-# This code is with adaptation copied from
-# 1.
-# Christoph Jansen, Georg Schollmeyer, Hannah Blocher, Julian Rodemann and Thomas Augustin (2023):
-# Robust statistical comparison of random variables with locally varying scale of measurement.
-# In: Proceedings of the Thirty-Ninth Conference on Uncertainty in Artificial Intelligence (UAI 2023).
-# Proceedings of Machine Learning Research, vol. 216. PMLR.
-# and the code provided by
-# https://github.com/hannahblo/Robust_GSD_Tests (accessed: 18.01.2024)
-# 2.
-# Hannah Blocher, Georg Schollmeyer, Christoph Jansen and Malte Nalenz (2023):
-# Depth Functions for Partial Orders with a Descriptive Analysis of Machine Learning Algorithms.
-# In: Proceedings of the Thirteenth International Symposium on Imprecise Probabilities: Theories and Applications (ISIPTA '23).
-# Proceedings of Machine Learning Research, vol. 215. PMLR.
-# and the code provided by
-# https://github.com/hannahblo/Comparing-ML-Algorithms-based-on-Data-Depth (accessed: 18.01.2024)
+# This code is an adapted version of an existing code. Due to the double-blind
+# review process, we do not include those references here.
+# The references will be included after the review process.
 
 
 
@@ -256,6 +244,24 @@ for (classifier in classifiers_comparison) {
   saveRDS(total_time, paste0(classifier, "_computation_time.rds"))
 }
 
+# computing the test statistic values
+classifier_of_interest <- "classif.svm"
+classifiers_comparison <- list( "classif.multinom", "classif.ranger", "classif.xgboost", "classif.glmnet", "classif.kknn", "classif.rpart")
+all_eps_values <- c("result_eps_0", "result_eps_1", "result_eps_2", "result_eps_3", "result_eps_4")
+
+proportion_below_df <- as.data.frame(matrix(rep(0, 6 * 5), nrow = 5, ncol = 6), row.names = all_eps_values)
+colnames(proportion_below_df) <- unlist(classifiers_comparison)
+for (classifier in classifiers_comparison) {
+  result_classifier <- readRDS(paste0(classifier, "_result.rds"))
+
+  for (eps_value in all_eps_values) {
+    base_value <- result_classifier$d_observed[[eps_value]]
+    proportion_below_df[eps_value, classifier] <-  sum(result_classifier$permutation_test[eps_value, ] < base_value)
+  }
+}
+
+saveRDS(proportion_below_df, "proportion_below_df.rds")
+
 
 ################################################################################
 # Result and Plotting
@@ -271,23 +277,9 @@ for (classifier in classifiers_comparison) {
 }
 
 
-# computing the test statistic values
-classifier_of_interest <- "classif.svm"
-classifiers_comparison <- list( "classif.multinom", "classif.ranger", "classif.xgboost", "classif.glmnet", "classif.kknn", "classif.rpart")
-all_eps_values <- c("result_eps_0", "result_eps_1", "result_eps_2", "result_eps_3", "result_eps_4")
 
-proportion_above_df <- as.data.frame(matrix(rep(0, 6 * 5), nrow = 5, ncol = 6), row.names = all_eps_values)
-colnames(proportion_above_df) <- unlist(classifiers_comparison)
-for (classifier in classifiers_comparison) {
-  result_classifier <- readRDS(paste0(classifier, "_result.rds"))
 
-  for (eps_value in all_eps_values) {
-    base_value <- result_classifier$d_observed[[eps_value]]
-    proportion_above_df[eps_value, classifier] <-  sum(result_classifier$permutation_test[eps_value, ] < base_value)
-  }
-}
 
-saveRDS(proportion_above_df, "final_result.rds")
 
 
 
