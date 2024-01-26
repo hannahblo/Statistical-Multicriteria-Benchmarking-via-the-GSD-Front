@@ -181,7 +181,7 @@ for (classifier in classifiers_comparison) {
   # dat_final <- readRDS("dat_final.rds")
   start_time <- Sys.time()
   result_inner <- test_two_items(dat_set, iteration_number = 200,
-                                 seed_number = 2983754,
+                                 seed_number = 658,
                                  eps_0 = 0,
                                  eps_1 = 0.5,
                                  eps_2 = NA,
