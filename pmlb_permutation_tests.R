@@ -36,10 +36,7 @@ library(ggridges) # visualization
 library(latex2exp) # for gamma (and epsilon) symbols
 library(RColorBrewer) # color palettes
 library(rcartocolor) # color gradients
-library(dplyr)
-library(farff)
-library(reshape2)
-library(parallel)
+library(farff) # for data preparation
 
 source("R/constraints_r1_r2.R") # contains the functions compute_constraints...
 source("R/sample_permutation_test.R") # permutation test, sample etc
