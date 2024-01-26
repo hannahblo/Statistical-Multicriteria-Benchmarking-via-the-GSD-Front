@@ -8,7 +8,6 @@
 
 # This code is with adaptation copied from
 # 1.
-# Hannah Blocher, Georg Schollmeyer, Christoph Jansen, and Malte Nalenz. Depth functions for
 # Christoph Jansen, Georg Schollmeyer, Hannah Blocher, Julian Rodemann and Thomas Augustin (2023):
 # Robust statistical comparison of random variables with locally varying scale of measurement.
 # In: Proceedings of the Thirty-Ninth Conference on Uncertainty in Artificial Intelligence (UAI 2023).
@@ -42,10 +41,7 @@ library(latex2exp) # for gamma (and epsilon) symbols
 library(RColorBrewer) # color palettes
 library(rcartocolor) # color gradients
 library(OpenML) # downloading data from openml
-library(dplyr)
-library(farff)
-library(reshape2)
-library(parallel)
+library(farff) # for openml data preparation
 
 source("R/constraints_r1_r2.R") # contains the functions compute_constraints...
 source("R/sample_permutation_test.R") # permutation test, sample etc
@@ -146,7 +142,8 @@ data_openml_filter$usercpu.time.millis.training <- max(data_openml_filter$usercp
 ################################################################################
 
 classifier_of_interest <- "classif.svm"
-classifiers_comparison <- list( "classif.multinom", "classif.ranger", "classif.xgboost", "classif.glmnet", "classif.kknn", "classif.rpart")
+classifiers_comparison <- list( "classif.multinom", "classif.ranger", "classif.xgboost",
+                                "classif.glmnet", "classif.kknn", "classif.rpart")
 
 
 for (classifier in classifiers_comparison) {
@@ -202,9 +199,9 @@ for (classifier in classifiers_comparison) {
   # min(dat_final$numeric)
   # max(dat_final$numeric)
 
-  index_max <- which(dat_final$numeric == max(dat_final$numeric))[1]
+  index_max <- which(dat_final$numeric == max(dat_final$numeric))
   # dat_final[index_max, ]
-  index_min <- which(dat_final$numeric == min(dat_final$numeric))[1]
+  index_min <- which(dat_final$numeric == min(dat_final$numeric))
   # dat_final[index_min, ]
 
   # Add minimal and maximal at the bottom of the matrix
@@ -214,12 +211,12 @@ for (classifier in classifiers_comparison) {
   # represents the maximal value
   dat_final[dim(dat_final)[1] + 1, ] <- c(min(dat_final$ordinal_1),
                                           min(dat_final$ordinal_2),
-                                          dat_final[index_min, 3],
+                                          dat_final[index_min[1], 3],
                                           0, 0, 0,
                                           max(dat_final$ID) + 1)
   dat_final[dim(dat_final)[1] + 1, ] <- c(max(dat_final$ordinal_1),
                                           max(dat_final$ordinal_2),
-                                          dat_final[index_max, 3],
+                                          dat_final[index_max[1], 3],
                                           0, 0, 0,
                                           max(dat_final$ID) + 1)
 
@@ -227,20 +224,25 @@ for (classifier in classifiers_comparison) {
   # Note that we can have now the problem that these two added elements are not
   # allowed to occur already in the data, thus we check this and eventually delete
   # this row
+  for (i in seq(1, length(index_min))) {
+    if (all((dat_final[dim(dat_final)[1] - 1, ] == dat_final[index_min[i], ])[c(1,2,3)])) {
+      dat_final[dim(dat_final)[1] - 1, ] <- dat_final[index_min[i], ]
+      dat_final <- dat_final[-c(index_min[i]), ]
+      dat_final$ID <- seq(1:dim(dat_final)[1])
 
-  if (all((dat_final[dim(dat_final)[1] - 1, ] == dat_final[index_min, ])[c(1,2,3)])) {
-    dat_final[dim(dat_final)[1] - 1, ] <- dat_final[index_min, ]
-    dat_final <- dat_final[-c(index_min), ]
-    dat_final$ID <- seq(1:dim(dat_final)[1])
-
-    # We have to update index_max as now the data frame changed
-    # note that the added maximum is by default behind [1]
-    index_max <- which(dat_final$numeric == max(dat_final$numeric))[1]
+      # We have to update index_max as now the data frame changed
+      # note that we want to compare to the last row and therefore we have
+      # to delete this one in index_max
+      index_max <- which(dat_final$numeric == max(dat_final$numeric))
+      index_max <- index_max[-length(index_max)]
+    }
   }
-  if (all((dat_final[dim(dat_final)[1], ] == dat_final[index_max, ])[c(1,2,3)])) {
-    dat_final[dim(dat_final)[1], ] <- dat_final[c(index_max), ]
-    dat_final <- dat_final[-c(index_max), ]
-    dat_final$ID <- seq(1:dim(dat_final)[1])
+  for (i in seq(1, length(index_max))) {
+    if (all((dat_final[dim(dat_final)[1], ] == dat_final[index_max[i], ])[c(1,2,3)])) {
+      dat_final[dim(dat_final)[1], ] <- dat_final[c(index_max[i]), ]
+      dat_final <- dat_final[-c(index_max[i]), ]
+      dat_final$ID <- seq(1:dim(dat_final)[1])
+    }
   }
 
 
@@ -293,115 +295,148 @@ saveRDS(proportion_above_df, "final_result.rds")
 # Constructing the graph representing all pairwise comparisons at once
 # therfore we have to compute the reverse (switching classifier and classifier_of_interest
 # position) observed minimal difference
-classifier_of_interest <- "classif.svm"
-classifiers_comparison <- list( "classif.multinom", "classif.ranger", "classif.xgboost", "classif.glmnet", "classif.kknn", "classif.rpart")
+classifiers_all <- list( "classif.svm",  "classif.multinom", "classif.ranger", "classif.xgboost", "classif.glmnet", "classif.kknn", "classif.rpart")
+
+for (k in seq(1, length(classifiers_all))) {
+  for (m in seq(1, length(classifiers_all))[-k]) {
+
+    classifier <- classifiers_all[m]
+    classifier_of_interest <- classifiers_all[k]
 
 
-for (classifier in classifiers_comparison) {
+    data_openml_selected <- data_openml_filter
 
-  data_openml_selected <- data_openml_filter
-
-  # Now we select two classifiers and compare them
-  # here we choose classif.rpart and classif.svm
-  data_openml_selected <- data_openml_selected[data_openml_selected$learner.name %in%
-                                                 c(classifier_of_interest,
-                                                   classifier), ]
+    # Now we select two classifiers and compare them
+    # here we choose classif.rpart and classif.svm
+    data_openml_selected <- data_openml_selected[data_openml_selected$learner.name %in%
+                                                   c(classifier_of_interest,
+                                                     classifier), ]
 
 
-  # now, we need to convert the data_final_selected into a dataframe with columns:
-  # ordinal_1, ordinal_2, numeric, count_group_a, count_group_b, count_all, ID
+    # now, we need to convert the data_final_selected into a dataframe with columns:
+    # ordinal_1, ordinal_2, numeric, count_group_a, count_group_b, count_all, ID
 
-  # Step 1: Converting the variables of interest into numeric and order modes
-  data_openml_selected[["predictive.accuracy"]] <- as.numeric(as.character(
-    data_openml_selected[["predictive.accuracy"]]))
+    # Step 1: Converting the variables of interest into numeric and order modes
+    data_openml_selected[["predictive.accuracy"]] <- as.numeric(as.character(
+      data_openml_selected[["predictive.accuracy"]]))
 
-  data_openml_selected[["usercpu.time.millis.training"]] <- as.ordered(as.character(
-    data_openml_selected[["usercpu.time.millis.training"]]))
+    data_openml_selected[["usercpu.time.millis.training"]] <- as.ordered(as.character(
+      data_openml_selected[["usercpu.time.millis.training"]]))
 
-  data_openml_selected[["usercpu.time.millis.testing"]] <- as.ordered(as.character(
-    data_openml_selected[["usercpu.time.millis.testing"]]))
-
-
-  # Step 2: duplication handling
-  data_count <- data_openml_selected %>% group_by_all() %>% count()
+    data_openml_selected[["usercpu.time.millis.testing"]] <- as.ordered(as.character(
+      data_openml_selected[["usercpu.time.millis.testing"]]))
 
 
-  data_algorithm_1 <- data_count[which(data_count$learner.name == classifier),
-                                 c(2, 3, 4, 5)]
-  data_algorithm_1 <- matrix(as.numeric(as.matrix(data_algorithm_1)), ncol = 4)
-  colnames(data_algorithm_1) <-  c("numeric", "ordinal_1", "ordinal_2", "count_group_a")
+    # Step 2: duplication handling
+    data_count <- data_openml_selected %>% group_by_all() %>% count()
 
 
-  data_algorithm_2 <- data_count[which(data_count$learner.name == classifier_of_interest),
-                                 c(2, 3, 4, 5)]
-  data_algorithm_2 <- matrix(as.numeric(as.matrix(data_algorithm_2)), ncol = 4)
-  colnames(data_algorithm_2) <-  c("numeric", "ordinal_1", "ordinal_2", "count_group_b")
-
-  dat_final <- merge(x = data_algorithm_1, y = data_algorithm_2,
-                     by = c("ordinal_1", "ordinal_2", "numeric"),
-                     all.x = TRUE, all.y = TRUE)
-  dat_final[is.na(dat_final)] <- 0
-  dat_final$count_all <- dat_final$count_group_a + dat_final$count_group_b
-  dat_final$ID <- seq(1:dim(dat_final)[1])
+    data_algorithm_1 <- data_count[which(data_count$learner.name == classifier),
+                                   c(2, 3, 4, 5)]
+    data_algorithm_1 <- matrix(as.numeric(as.matrix(data_algorithm_1)), ncol = 4)
+    colnames(data_algorithm_1) <-  c("numeric", "ordinal_1", "ordinal_2", "count_group_a")
 
 
-  # View(dat_final)
-  # dim(dat_final)
-  # min(dat_final$numeric)
-  # max(dat_final$numeric)
+    data_algorithm_2 <- data_count[which(data_count$learner.name == classifier_of_interest),
+                                   c(2, 3, 4, 5)]
+    data_algorithm_2 <- matrix(as.numeric(as.matrix(data_algorithm_2)), ncol = 4)
+    colnames(data_algorithm_2) <-  c("numeric", "ordinal_1", "ordinal_2", "count_group_b")
 
-  index_max <- which(dat_final$numeric == max(dat_final$numeric))[1]
-  # dat_final[index_max, ]
-  index_min <- which(dat_final$numeric == min(dat_final$numeric))[1]
-  # dat_final[index_min, ]
-
-  # Add minimal and maximal at the bottom of the matrix
-
-  # ATTENTION: It is very important for the following analysis that the
-  # the input at the second largest row is the minimal value and the largest row
-  # represents the maximal value
-  dat_final[dim(dat_final)[1] + 1, ] <- c(min(dat_final$ordinal_1),
-                                          min(dat_final$ordinal_2),
-                                          dat_final[index_min, 3],
-                                          0, 0, 0,
-                                          max(dat_final$ID) + 1)
-  dat_final[dim(dat_final)[1] + 1, ] <- c(max(dat_final$ordinal_1),
-                                          max(dat_final$ordinal_2),
-                                          dat_final[index_max, 3],
-                                          0, 0, 0,
-                                          max(dat_final$ID) + 1)
-
-
-  # Note that we can have now the problem that these two added elements are not
-  # allowed to occur already in the data, thus we check this and eventually delete
-  # this row
-
-  if (all((dat_final[dim(dat_final)[1] - 1, ] == dat_final[index_min, ])[c(1,2,3)])) {
-    dat_final[dim(dat_final)[1] - 1, ] <- dat_final[index_min, ]
-    dat_final <- dat_final[-c(index_min), ]
+    dat_final <- merge(x = data_algorithm_1, y = data_algorithm_2,
+                       by = c("ordinal_1", "ordinal_2", "numeric"),
+                       all.x = TRUE, all.y = TRUE)
+    dat_final[is.na(dat_final)] <- 0
+    dat_final$count_all <- dat_final$count_group_a + dat_final$count_group_b
     dat_final$ID <- seq(1:dim(dat_final)[1])
 
-    # We have to update index_max as now the data frame changed
-    # note that the added maximum is by default behind [1]
-    index_max <- which(dat_final$numeric == max(dat_final$numeric))[1]
+
+    # View(dat_final)
+    # dim(dat_final)
+    # min(dat_final$numeric)
+    # max(dat_final$numeric)
+
+    index_max <- which(dat_final$numeric == max(dat_final$numeric))
+    # dat_final[index_max, ]
+    index_min <- which(dat_final$numeric == min(dat_final$numeric))
+    # dat_final[index_min, ]
+
+    # Add minimal and maximal at the bottom of the matrix
+
+    # ATTENTION: It is very important for the following analysis that the
+    # the input at the second largest row is the minimal value and the largest row
+    # represents the maximal value
+    dat_final[dim(dat_final)[1] + 1, ] <- c(min(dat_final$ordinal_1),
+                                            min(dat_final$ordinal_2),
+                                            dat_final[index_min[1], 3],
+                                            0, 0, 0,
+                                            max(dat_final$ID) + 1)
+    dat_final[dim(dat_final)[1] + 1, ] <- c(max(dat_final$ordinal_1),
+                                            max(dat_final$ordinal_2),
+                                            dat_final[index_max[1], 3],
+                                            0, 0, 0,
+                                            max(dat_final$ID) + 1)
+
+
+    # Note that we can have now the problem that these two added elements are not
+    # allowed to occur already in the data, thus we check this and eventually delete
+    # this row
+    for (i in seq(1, length(index_min))) {
+      if (all((dat_final[dim(dat_final)[1] - 1, ] == dat_final[index_min[i], ])[c(1,2,3)])) {
+        dat_final[dim(dat_final)[1] - 1, ] <- dat_final[index_min[i], ]
+        dat_final <- dat_final[-c(index_min[i]), ]
+        dat_final$ID <- seq(1:dim(dat_final)[1])
+
+        # We have to update index_max as now the data frame changed
+        # note that we want to compare to the last row and therefore we have
+        # to delete this one in index_max
+        index_max <- which(dat_final$numeric == max(dat_final$numeric))
+        index_max <- index_max[-length(index_max)]
+      }
+    }
+    for (i in seq(1, length(index_max))) {
+      if (all((dat_final[dim(dat_final)[1], ] == dat_final[index_max[i], ])[c(1,2,3)])) {
+        dat_final[dim(dat_final)[1], ] <- dat_final[c(index_max[i]), ]
+        dat_final <- dat_final[-c(index_max[i]), ]
+        dat_final$ID <- seq(1:dim(dat_final)[1])
+      }
+    }
+
+
+    dat_set <- dat_final
+    start_time <- Sys.time()
+    result_inner <- test_two_items(dat_set, iteration_number = 1)
+
+    total_time <- Sys.time() - start_time
+
+    saveRDS(result_inner, paste0(classifier, "-", classifier_of_interest, "_result_all.rds"))
+    saveRDS(total_time, paste0(classifier, "-", classifier_of_interest, "_computation_time_all.rds"))
   }
-  if (all((dat_final[dim(dat_final)[1], ] == dat_final[index_max, ])[c(1,2,3)])) {
-    dat_final[dim(dat_final)[1], ] <- dat_final[c(index_max), ]
-    dat_final <- dat_final[-c(index_max), ]
-    dat_final$ID <- seq(1:dim(dat_final)[1])
-  }
-
-
-  dat_set <- dat_final
-  start_time <- Sys.time()
-  result_inner <- test_two_items(dat_set, iteration_number = 1)
-
-  total_time <- Sys.time() - start_time
-
-  saveRDS(result_inner, paste0(classifier, "_result_reverse.rds"))
-  saveRDS(total_time, paste0(classifier, "_computation_time_reverse.rds"))
 }
 
+
+
+df_eps_0 <- as.data.frame(matrix(rep(NA, length(classifiers_all) * length(classifiers_all)),
+                                 nrow = length(classifiers_all)))
+colnames(df_eps_0) <- rownames(df_eps_0) <- classifiers_all
+
+for (k in seq(1, length(classifiers_all))) {
+  for (m in seq(1, length(classifiers_all))[-k]) {
+    classifier <- classifiers_all[k]
+    classifier_of_interest <- classifiers_all[m]
+
+    result_inner <- readRDS(paste0(classifier, "-", classifier_of_interest, "_result_all.rds"))
+    df_eps_0[unlist(classifier), unlist(classifier_of_interest)] <- result_inner$d_observed$result_eps_0
+
+  }
+}
+
+# df_eps_p explanation:
+# an entry at with row x (correpsonding to algorithm x) and column y (corresponding to algorithm y)
+# gives us an objectiv where algorithm x is included with minus in objective
+# and algorihtm y is included with plus in objectiv
+# all in all row gives - ; and column gives +
+# With this we get that here the first row corresponds to the already computed
+# comparisons needed for evaluating the test
 
 
 
