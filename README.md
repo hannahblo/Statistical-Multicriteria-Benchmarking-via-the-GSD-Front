@@ -97,7 +97,9 @@ The **PMLB** test compares algorithm named "cre" (classifier of interest in the 
 - dat_final.rds stores the rescaled OpenML data (saved 26.01.2024)
 
 ## References:
-- Van Rijn, J. N., Bischl, B., Torgo, L., Gao, B., Umaashankar, V., Fischer, S., Winter, P., Wiswedel, B., Berthold, M. R., and Vanschoren, J. Openml: A collaborative science platform. In Machine Learning and Knowledge Discovery in Databases: European Conference, ECML PKDD 2013, Prague, Czech Republic, September 23-27, 2013, Proceedings, Part III 13, pp. 645–649. Springer, 2013
+- Blocher, H., Schollmeyer, G., Jansen, C., and Nalenz, M. Depth functions for partial orders with a descriptive analysis of machine learning algorithms. In Miranda, E., Montes, I., Quaeghebeur, E., and Vantaggi, B. (eds.), Proceedings of the Thirteenth International Symposium on Imprecise Probability: Theories and Applications, volume 215 of Proceedings of Machine Learning Research, pp. 59–71. PMLR, 11–14 Jul 2023
+- Jansen, C., Schollmeyer, G., Blocher, H., Rodemann, J., and Augustin, T. Robust statistical comparison of random variables with locally varying scale of measurement. In Evans, R. J. and Shpitser, I. (eds.), Proceedings of the Thirty-Ninth Conference on Uncertainty in Artificial Intelligence, volume 216 of Proceedings of Machine Learning Research, pp. 941–952. PMLR, 31 Jul–04 Aug 2023
 - Olson, R. S., La Cava, W., Orzechowski, P., Urbanowicz, R. J., and Moore, J. H. Pmlb: a large benchmark suite for machine learning evaluation and comparison. BioData Mining, 10:36, 2017
-- This code is an adapted version of an existing code. Due to the double-blind review process, we do not include those references here. The references will be included after the review process.
+- Van Rijn, J. N., Bischl, B., Torgo, L., Gao, B., Umaashankar, V., Fischer, S., Winter, P., Wiswedel, B., Berthold, M. R., and Vanschoren, J. Openml: A collaborative science platform. In Machine Learning and Knowledge Discovery in Databases: European Conference, ECML PKDD 2013, Prague, Czech Republic, September 23-27, 2013, Proceedings, Part III 13, pp. 645–649. Springer, 2013
+
 

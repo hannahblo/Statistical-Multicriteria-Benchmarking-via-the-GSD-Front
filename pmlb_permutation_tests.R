@@ -11,10 +11,6 @@
 ###########
 
 
-# This code is an adapted version of an existing code. Due to the double-blind
-# review process, we do not include those references here.
-# The references will be included after the review process.
-
 
 ################################################################################
 # Session Settings
