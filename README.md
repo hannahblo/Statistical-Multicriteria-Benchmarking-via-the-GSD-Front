@@ -59,7 +59,7 @@ Then download the following files and save them in a folder named 'R' (these fil
 - sample_permutation_test.R
 - plotting_permutationtest.R
 
-Afterwards, please decided which data set you are interested OpenML vs PMLB\
+Afterwards, please decide which data set you are interested in: OpenML vs PMLB\
 \
 **OpemML** If you are interested in OpenML, download openml_permutation_tests.R and run it. Note that the 'R/' folder and the openml_permutation_tests.R file must be in the same folder structure. All results produced by this file will be stored in the current that contains openml_permutation_tests.R. For tidiness, we decided to copy the results to the openml_permutation_results/ folder after the entire computation. Therefore, if you are interested in running only parts of the code, please change your working directory (after you have obtained all the necessary files) to the openml_permutation_results/ folder.\
 \
