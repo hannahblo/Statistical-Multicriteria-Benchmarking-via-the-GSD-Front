@@ -28,7 +28,7 @@ library(farff) # for openml data preparation
 
 source("R/constraints_r1_r2.R") # contains the functions compute_constraints...
 source("R/sample_permutation_test.R") # permutation test, sample etc
-source("R/plotting_permutationtest.R") # plot function
+source("R/plotting_permutationtest_openml.R") # plot function
 source("R/test_two_items.R") # main function summarizing the computation
 ################################################################################
 # Prepare Data Set: OpenML
@@ -121,7 +121,7 @@ data_openml_filter$usercpu.time.millis.training <- findInterval(data_openml_filt
 data_openml_filter$usercpu.time.millis.training <- max(data_openml_filter$usercpu.time.millis.training) + 1 - data_openml_filter$usercpu.time.millis.training
 
 ################################################################################
-# Conduct the permutation test and plotting the single comparisons
+# Conducting the permutation test and plotting the results
 ################################################################################
 
 classifier_of_interest <- "classif.svm"
@@ -261,15 +261,27 @@ saveRDS(proportion_below_df, "proportion_below_df.rds")
 ################################################################################
 # Result and Plotting
 ################################################################################
-# plotting the result of the pairwise comparisons
-classifier_of_interest <- "classif.svm"
+# plotting the test results (of the pairwise comparisons) as in figure 2, 3, and 4 (appendix) 
+# in the paper 
 classifiers_comparison <- list( "classif.multinom", "classif.ranger", "classif.xgboost", "classif.glmnet", "classif.kknn", "classif.rpart")
 
+results_plots = list()
 for (classifier in classifiers_comparison) {
+  # if(classifier == "classif.xgboost")
+  #   debugonce(plotting_permutationtest)
   result_plot <- readRDS(paste0(classifier, "_result.rds"))
-  plotting_permutationtest(result_plot$permutation_test, result_plot$d_observed,
-                         add_name_file = classifier)
+  results_plots[[classifier]] = result_plot
 }
+plotting_permutationtest_openml(results_plots)
+
+# 
+# plotting_permutationtest_openml(result_plot)
+# 
+# 
+# for (classifier in classifiers_comparison) {
+#   result_plot <- readRDS(paste0(classifier, "_result.rds"))
+#   plotting_permutationtest_openml(result_plot)
+# }
 
 
 

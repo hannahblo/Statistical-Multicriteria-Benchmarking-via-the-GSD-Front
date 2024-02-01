@@ -32,7 +32,7 @@ library(farff) # for data preparation
 
 source("R/constraints_r1_r2.R") # contains the functions compute_constraints...
 source("R/sample_permutation_test.R") # permutation test, sample etc
-source("R/plotting_permutationtest.R") # plot function
+source("R/plotting_permutationtest_pmlb.R") # plot function
 source("R/test_two_items.R") # main function summarizing the computation
 ################################################################################
 # Prepare Data Set: PMLB
@@ -58,7 +58,7 @@ data_pmlb$results_noisy_y_stacked <- findInterval(data_pmlb$results_noisy_y_stac
 
 
 ################################################################################
-# Conduct the permutation test and plotting the single comparisons
+# Conducting the permutation test and plotting the results
 ################################################################################
 
 classifier_of_interest <- "cre"
@@ -212,17 +212,19 @@ saveRDS(proportion_below_df, "proportion_below_df.rds")
 ################################################################################
 # Result and Plotting
 ################################################################################
-# # plotting the result of the pairwise comparisons
-# classifier_of_interest <- "cre"
-# classifiers_comparison <- list("svmRadial", "J48", "ranger", "knn", "glmnet")
-#
-# for (classifier in classifiers_comparison) {
-#   result_plot <- readRDS(paste0(classifier, "_result.rds"))
-#   plotting_permutationtest(result_plot$permutation_test, result_plot$d_observed,
-#                          add_name_file = classifier)
-# }
-#
-#
+# plotting the test results (of the pairwise comparisons) as in figure 2, 3, and 4 (appendix) 
+# in the paper
+classifiers_comparison <- list("svmRadial", "J48", "ranger", "knn", "glmnet")
+
+results_plots = list()
+for (classifier in classifiers_comparison) {
+  # if(classifier == "classif.xgboost")
+  #   debugonce(plotting_permutationtest)
+  result_plot <- readRDS(paste0(classifier, "_result.rds"))
+  results_plots[[classifier]] = result_plot
+}
+
+plotting_permutationtest_pmlb(results_plots)
 
 
 
