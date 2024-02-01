@@ -1,8 +1,6 @@
 # TODOS:
 - @Julian bitte nochmal pmlb durchlesen und erklären was die einzelnen Files machen--> siehe TODOOOOS und die Laufzeit eintragen
-- @Julian bitte setup session anpassen an das was du brauchst
 - @Julian bitte noch bei den Notationen die TODOOS machen. Danke :)
-- @Julian: brauchst du das .Rproj Objekt? Falls nein gerne löschen, da das noch den Namen des alten Repos trägt.
 - @alle: Achtung, wenn eine der Permutationsläufe im PMLB nicht verwendet wird, dann müssen wir das in der Erklärung (direkt nach Introduction) noch rausschmeißen.
 
 # Statistical Multicriteria Benchmarking via the GSD-Front
