@@ -1,6 +1,5 @@
 # TODOS:
 - @Julian bitte nochmal pmlb durchlesen und erklären was die einzelnen Files machen--> siehe TODOOOOS und die Laufzeit eintragen
-- @Julian bitte noch bei den Notationen die TODOOS machen. Danke :)
 - @alle: Achtung, wenn eine der Permutationsläufe im PMLB nicht verwendet wird, dann müssen wir das in der Erklärung (direkt nach Introduction) noch rausschmeißen.
 
 # Statistical Multicriteria Benchmarking via the GSD-Front
@@ -40,9 +39,9 @@ For OpenML:
 - "classif.rpart" is renamend to "CART" in the article
 
 For PMLB:
-- "cre" is renamed to TODOOOOO
+- "cre" is renamed to "CRE" in the article
 - "svmRadial" is renamed to "SVM" in the article
-- "J48" TOOOOOO
+- "J48" is renamed to "CART" in the article
 - "ranger" is renamed to "RF" in the article
 - "knn" is fenamed to "kNN" in the article
 - "glmnet is renamed to "GLMNet" in the article
