@@ -63,10 +63,10 @@ Afterwards, please decide which data set you are interested in: OpenML vs PMLB\
 **OpemML** If you are interested in OpenML, download openml_permutation_tests.R and run it. Note that the 'R/' folder and the openml_permutation_tests.R file must be in the same folder structure. All results produced by this file will be stored in the current that contains openml_permutation_tests.R. For tidiness, we decided to copy the results to the openml_permutation_results/ folder after the entire computation. Therefore, if you are interested in running only parts of the code, please change your working directory (after you have obtained all the necessary files) to the openml_permutation_results/ folder.\
 \
 **PMLB** If you are interested in PMLB, download the following files and store them in a folder named 'pmlb_results' (these files can already be found in the folder pmlb_evaluations/):
-   - main_pmlb_experiments.R This script runs 10-fold cross-validation on each considered classifier on each of the 62 datasets from the PMLB benchmark suite. It returns i) classical accuracies, ii) accuracies with       perturbed x and iii) accuracies with perturbed y, see documentation in the paper. 
-   - helper_pmlb_experiments.R TODOOOOOOO
-   - make_method_cre.R TODOOOOOOOOOOOOOOO
-   - final_results.RDS TODOOOOOOOOOOOOOOOO
+   - main_pmlb_experiments.R: This script runs 10-fold cross-validation on each considered classifier on each of the 62 datasets from the PMLB benchmark suite. It returns i) classical accuracies, ii) accuracies with       perturbed x and iii) accuracies with perturbed y, see documentation in the paper. 
+   - helper_pmlb_experiments.R: This file contains some helper functions for main_pmlb_experiments.R to compute accuracy, perturbate x and y, generate the folds etc.
+   - make_method_cre.R: This file creates a method in the caret package (which is used for tuning and cross-validation)
+   - final_results.RDS is a stacked data frame that contains results for all classifiers on all data sets for all 3 qualitity metrics
      
 Either you can now reproduce the evaluations (computing accuracy and a robustified accuracy) by running main_pmlb_experiments.R, or you can immediately go to the next step and use the already computed results stored in final_results.RDS.\
 Now that the evaluation is computed and saved, go back to the main folder and save the file pmlb_permutation_tests.R to run the permutation tests. Note that the folder 'R/', 'pmlb_results/' and the file pmlb_permutation_tests.R must be in the same folder structure. All results produced by this file will be stored in the current that contains pmlb_permutation_tests.R. For tidiness, we decided to copy the results after the entire computation to the pmlb_permutation_results/ folder. Thus, if you are interested in running only parts of the code, please change your working directory (after you have obtained all necessary files) to the folder pmlb_permutation_results/.
