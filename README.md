@@ -1,5 +1,4 @@
 # TODOS:
-- @Julian bitte nochmal pmlb durchlesen und erklären was die einzelnen Files machen--> siehe TODOOOOS und die Laufzeit eintragen
 
 # Statistical Multicriteria Benchmarking via the GSD-Front
 
@@ -76,7 +75,7 @@ Now that the evaluation is computed and saved, go back to the main folder and sa
 The computation times of the main files is as follows
 - openml_permutation_tests.R: approximately 2 weeks
 - pmlb_permutation_tests.R: approximately 5 days 
-- main_pmlb_experiments.R: approximately TODOOOOOOOOOOOOOOOO
+- main_pmlb_experiments.R: approximately 11 hours
 
 The files openml_permutation_tests.R and pmlb_permutation_tests.R produce the following objects. \
 \
