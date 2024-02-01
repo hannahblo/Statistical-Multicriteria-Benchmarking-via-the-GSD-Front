@@ -22,6 +22,7 @@ The structure of the repository is as follows:
 The code was tested with
 - R version 4.2.1
 - R version 4.2.2
+- R version 4.3.2
 
 on
 
