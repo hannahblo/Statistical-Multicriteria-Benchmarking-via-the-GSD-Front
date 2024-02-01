@@ -89,13 +89,13 @@ The **PMLB** test compares algorithm named "cre" (classifier of interest in the 
 - #_result.rds stores the result of the empirical as well as the permutated test statistic where we compute the expectation of # minus the classifier of interest.
 - #_computation_time.rds stores the computation time to obtain #_result.rds
 - #_dat_set.rds stores the used sorted data set (here group_a corresponds to the classifier of interest and # to group_b)
-- #_regularization.jpg: TODOOOOOOO
-- #_values_teststatistic.jpg TODOOOOOOOO
 - *_°_result_all.rds stores the result of the empirical as well as the permutated test statistic where we compute the expectation of * minus °
 - *_°_computation_time.rds stores the time to compute *_°_result_all.rds
 - proportion_below_df.rds stores the number of permutation results that are below the observed one
 - dat_openml_filter.rds stores the downloaded OpenMl data (download was done 26.01.2024)
 - dat_final.rds stores the rescaled OpenML data (saved 26.01.2024)
+-  fig_2.pdf, fig_3.pdf, fig_4.pdf are the Figures 2 to 4 in the paper visualizing the test results for OpenML
+-  fig_5.pdf, fig_6.pdf, fig_7.pdf are the Figures 5 to 7 in the paper visualizing the test results for PMLB 
 
 ## References:
 - Blocher, H., Schollmeyer, G., Jansen, C., and Nalenz, M. Depth functions for partial orders with a descriptive analysis of machine learning algorithms. In Miranda, E., Montes, I., Quaeghebeur, E., and Vantaggi, B. (eds.), Proceedings of the Thirteenth International Symposium on Imprecise Probability: Theories and Applications, volume 215 of Proceedings of Machine Learning Research, pp. 59–71. PMLR, 11–14 Jul 2023
