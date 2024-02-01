@@ -1,6 +1,5 @@
 # TODOS:
 - @Julian bitte nochmal pmlb durchlesen und erklären was die einzelnen Files machen--> siehe TODOOOOS und die Laufzeit eintragen
-- @alle: Achtung, wenn eine der Permutationsläufe im PMLB nicht verwendet wird, dann müssen wir das in der Erklärung (direkt nach Introduction) noch rausschmeißen.
 
 # Statistical Multicriteria Benchmarking via the GSD-Front
 
@@ -64,7 +63,7 @@ Afterwards, please decide which data set you are interested in: OpenML vs PMLB\
 **OpemML** If you are interested in OpenML, download openml_permutation_tests.R and run it. Note that the 'R/' folder and the openml_permutation_tests.R file must be in the same folder structure. All results produced by this file will be stored in the current that contains openml_permutation_tests.R. For tidiness, we decided to copy the results to the openml_permutation_results/ folder after the entire computation. Therefore, if you are interested in running only parts of the code, please change your working directory (after you have obtained all the necessary files) to the openml_permutation_results/ folder.\
 \
 **PMLB** If you are interested in PMLB, download the following files and store them in a folder named 'pmlb_results' (these files can already be found in the folder pmlb_evaluations/):
-   - main_pmlb_experiments.R TODOOOOOOOOO
+   - main_pmlb_experiments.R This script runs 10-fold cross-validation on each considered classifier on each of the 62 datasets from the PMLB benchmark suite. It returns i) classical accuracies, ii) accuracies with       perturbed x and iii) accuracies with perturbed y, see documentation in the paper. 
    - helper_pmlb_experiments.R TODOOOOOOO
    - make_method_cre.R TODOOOOOOOOOOOOOOO
    - final_results.RDS TODOOOOOOOOOOOOOOOO
