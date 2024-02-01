@@ -1,4 +1,3 @@
-# TODOS:
 
 # Statistical Multicriteria Benchmarking via the GSD-Front
 
