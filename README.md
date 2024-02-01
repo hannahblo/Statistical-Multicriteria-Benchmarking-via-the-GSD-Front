@@ -25,7 +25,7 @@ on
 
 - Linux Ubuntu 20.04.5
 - Windows 10
-- Windows 11 Pro Build 10.0. build 22621
+- Windows 11 Pro 10.0. build 22621
 
 ## Notation
 To clarify the different notations between the article in the Code.
