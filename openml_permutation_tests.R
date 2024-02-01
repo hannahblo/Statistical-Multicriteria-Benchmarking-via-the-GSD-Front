@@ -261,8 +261,8 @@ saveRDS(proportion_below_df, "proportion_below_df.rds")
 ################################################################################
 # Result and Plotting
 ################################################################################
-# plotting the test results (of the pairwise comparisons) as in figure 2, 3, and 4 (appendix) 
-# in the paper 
+# plotting the test results (of the pairwise comparisons) as in figure 2, 3, and 4 (appendix)
+# in the paper
 classifiers_comparison <- list( "classif.multinom", "classif.ranger", "classif.xgboost", "classif.glmnet", "classif.kknn", "classif.rpart")
 
 results_plots = list()
@@ -274,10 +274,10 @@ for (classifier in classifiers_comparison) {
 }
 plotting_permutationtest_openml(results_plots)
 
-# 
+#
 # plotting_permutationtest_openml(result_plot)
-# 
-# 
+#
+#
 # for (classifier in classifiers_comparison) {
 #   result_plot <- readRDS(paste0(classifier, "_result.rds"))
 #   plotting_permutationtest_openml(result_plot)
@@ -437,5 +437,11 @@ for (k in seq(1, length(classifiers_all))) {
 # With this we get that here the first row corresponds to the already computed
 # comparisons needed for evaluating the test
 
+
+
+# The Hasse graph of the empirical GSD relation for the OpenML datasets was created
+# by first computing the value d_{80}(C,C') for all distinct pairs (C,C')  from the
+# set {SVM, RF, CART, LR, GLMNet, xGBoost, kNN } and then drawing a top-down edge
+# from C to C', whenever d_{80}(C,C') >= 0. The resulting figure was created manually.
 
 

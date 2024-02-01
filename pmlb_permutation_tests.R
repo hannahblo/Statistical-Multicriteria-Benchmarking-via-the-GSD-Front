@@ -212,7 +212,7 @@ saveRDS(proportion_below_df, "proportion_below_df.rds")
 ################################################################################
 # Result and Plotting
 ################################################################################
-# plotting the test results (of the pairwise comparisons) as in figure 2, 3, and 4 (appendix) 
+# plotting the test results (of the pairwise comparisons) as in figure 2, 3, and 4 (appendix)
 # in the paper
 classifiers_comparison <- list("svmRadial", "J48", "ranger", "knn", "glmnet")
 
@@ -384,4 +384,10 @@ for (k in seq(1, length(classifiers_all))) {
 # all in all row gives - ; and column gives +
 # With this we get that here the first row corresponds to the already computed
 # comparisons needed for evaluating the test
+
+
+# The Hasse graph of the empirical GSD relation for the PMLB datasets was created
+# by first computing the value d_{62}(C,C') for all distinct pairs (C,C')  from the set
+# {SVM, RF, CART, CRE, GLMNet, kNN } and then drawing a top-down edge from C to C',
+# whenever d_{62}(C,C') >= 0. The resulting figure was created manually.
 
