@@ -31,7 +31,8 @@ plotting_permutationtest_openml <- function(results_plots) {
   d_observed = d_observed %>% unlist()
   names(d_observed) = c("rpart", "knn", "xgboost", "ranger", "GLMnet", "Multinom")
   
-  # get critical values (0.05/6) (adapt manually to quantiles from stat_density_ridges {ggridges})
+  # get critical values (0.05/6) (adapt manually to quantiles
+  # from stat_density_ridges {ggridges}, see documentation in appendix of paper)
   cv_rpart = quantile(all_test_results[,1], probs = 0.05/6) +0.0015
   cv_knn = quantile(all_test_results[,2], probs = 0.05/6)
   cv_xgboost = quantile(all_test_results[,3], probs = 0.05/6) -0.0043
@@ -47,16 +48,6 @@ plotting_permutationtest_openml <- function(results_plots) {
   cv_GLMnet_0.5 = quantile(all_test_results[,5], probs = 0.05) +0.0057
   cv_Multinom_0.5 = quantile(all_test_results[,6], probs = 0.05) -0.006
   
-  ## minimal values for global hypothesis
-  #global = apply(all_test_results, 1, min)
-  # global = sort(as.matrix(all_test_results))[1:dim(all_test_results)[1]]
-  # all_test_results = cbind(all_test_results, global)
-  # colnames(all_test_results) = c("rpart", "knn", "xgboost", "ranger", "GLMnet", "Multinom", "all")
-  # 
-  # for observed: 
-  #d_observed= append(d_observed,min(d_observed))
-  #names(d_observed) = c("rpart", "knn", "xgboost", "ranger", "GLMnet", "Multinom", "all")
-  
   ## theme for horizontal charts
   theme_flip <-
     theme(
@@ -68,52 +59,19 @@ plotting_permutationtest_openml <- function(results_plots) {
       legend.text = element_text(family = "Roboto Mono", size = 18),
       legend.title = element_text(face = "bold", size = 18, margin = 25)#margin(b = 25))
     )
-  
-  # 
-  # # nice colors
-  # my_pal <- carto_pal(n = 8, name = "Bold")[c(1, 3, 7, 2,4,5,6)]
-  # # colorblind friendly
+ # colorblind friendly
    cbbPalette <- c("#000000", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
-  
-  
-  # # for geomsegment
+ # for geomsegment
   d_observed = unlist(d_observed) %>% rev
   d_observed_geom = data.frame(test = seq(1,6), d = d_observed )
-  
-  legend_title = latex2exp::TeX("Distribution of test statistics ${d}_{I}$, ${d}^{\\epsilon}_{I}$, $\\underline{d}_{I}$ and $\\underline{d}^{\\epsilon}_{I}$")
-  legend_title = latex2exp::TeX("               Densities of Resampled Test Statistics ${d}_{I}$")# ${d}^{\\epsilon}_{I}$")
   legend_title = ""
-  y_title = c(latex2exp::TeX("$\\epsilon = 0$"), latex2exp::TeX("$\\epsilon = 0.25$"),latex2exp::TeX("$\\epsilon = 0.5$"),
-              latex2exp::TeX("$\\epsilon = 0.75$"),latex2exp::TeX("$\\epsilon = 1$"))
-  
-  
   df = stack(all_test_results )
-  
   labels = fct_rev(df$ind) %>% levels # make sure labels align with levels in factors of df
   labels_segments = fct_rev(df$ind)
   labels = c("LR", "GLMNet", "RF", "xGBoost", "kNN", "CART")
-  #labels = c("CART", "kNN", "xGBoost", "RF","GLMNet", "LR")
-  
-  # make data frame to highlight rejection region
-  # rej_region_Multinom = cbind(seq(-0.4,-0.2,0.01), rep("Multinom", times= length(seq(-0.4,-0.2,0.01))))
-  # rej_region_GLMnet = cbind(seq(-0.4,-0.2,0.01), rep("GLMnet", times= length(seq(-0.4,-0.2,0.01))))
-  # rej_region_ranger = cbind(seq(-0.4,-0.2,0.01), rep("ranger", times= length(seq(-0.4,-0.2,0.01))))
-  # rej_region_xgboost = cbind(seq(-0.4,-0.2,0.01), rep("xgboost", times= length(seq(-0.4,-0.2,0.01))))
-  # rej_region_knn = cbind(seq(-0.4,-0.2,0.01), rep("knn", times= length(seq(-0.4,-0.2,0.01))))
-  # rej_region_rpart = cbind(seq(-0.4,-0.2,0.01), rep("rpart", times= length(seq(-0.4,-0.2,0.01))))
-  # 
-  # rej_region_df = rbind(rej_region_Multinom, rej_region_GLMnet, rej_region_ranger,
-  #                       rej_region_xgboost, rej_region_knn, rej_region_rpart)  %>% as.data.frame()
-  # rej_region_df[,1] = rej_region_df[,1] %>% as.numeric()
-  # colnames(rej_region_df) = c("values", "ind")
-  
-  #rej_region_df = data.frame(test = seq(1,6), d = rej_region )
-  
-  
   fill_rej_reg = 0.2
   
   # visualize test statistics including observed ones (see Figure 2 in paper)
-  
   figure_2 = ggplot(df, aes(x = values, y = fct_rev(ind), fill = factor(stat(quantile)))) +
     xlim(c(-0.45,0.05)) +
     scale_fill_manual(
@@ -136,12 +94,10 @@ plotting_permutationtest_openml <- function(results_plots) {
     theme(axis.title.x = element_text(margin = 20)) +
     theme(plot.title = element_text(hjust = 0.8)) +
     scale_y_discrete( name = "SVM vs.                             ", labels = labels) +
-    #scale_fill_viridis_c(name = "Value of Test Statistic", option = "C", begin = 0.01, end = 0.99) +
     coord_cartesian(clip = "off") +
     labs(title = legend_title) +
     theme_ridges(font_size = 18, grid = TRUE) +
     ggthemes::theme_economist_white(gray_bg = T) +
-            #theme(axis.title.y = element_blank()) +
     theme(axis.title.x = element_blank()) +
     theme(legend.position = "bottom", legend.key.size = unit(1.2, 'cm'),
           legend.box.spacing = unit(1.8, 'cm'), 
@@ -183,19 +139,10 @@ dev.off()
 
 
   # function to compute shares of rejected resampled test statistics
-  # (see supp. C)
   reject_share <- function(gamma, d_res, d_obs){
     d_obs <- rep(d_obs, length(d_res))
     sum(d_res - d_obs > 2*gamma/(1 - gamma))
   }
-
-  # # check for gamma = 0
-  # reject_share(0, d_res = all_test_results$reg1, d_obs = d_observed["eps_1"] )
-  # reject_share(0, d_res = all_test_results$reg0.75, d_obs = d_observed["eps_0.75"] )
-  # reject_share(0, d_res = all_test_results$reg0.5, d_obs = d_observed["eps_0.5"] )
-  # reject_share(0, d_res = all_test_results$reg0.25, d_obs = d_observed["eps_0.25"] )
-  # reject_share(0, d_res = all_test_results$reg0, d_obs = d_observed["eps_0"] )
-  #
   # define grid of gamma values...
   gamma_grid = seq(0,0.2, by = 0.001) %>% as.list()
   #... and lapply share computation over this grid
@@ -259,20 +206,12 @@ dev.off()
   # Visualization of rejection shares
   ################################################################################
 
-  # only visualize unregularized test statistics
+  # only visualize unregularized test statistics, see footnote 7 in paper
   df_rej_all = rbind(df_rej_glmnet, df_rej_knn, df_rej_ranger,
                      df_rej_xgboost)
-  #method = paste(add_name_file, "vs. SVM")
-  #latex2exp::TeX("$\\epsilon = 0$")
-
   par(mar=c(3,4,2,2))
-
-  # color grid for regulaizations
-  pal = brewer.pal(5, "YlGnBu")[c(2,3,4,5,6,7)]
   # to do: discrete palette
   pal = c("#DB6D00","#490092", "#56B4E9", "#009E73")
-  #cbbPalette <- c("#000000", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
-  
   # compute p-values
   df_rej_all$Rejection_share = 1- df_rej_all$Rejection.share/nrow(all_test_results)
   # compute number of contaminations
@@ -283,18 +222,14 @@ dev.off()
   x_limits = c(0,15)
   y_limits = c(0,0.35)
 
-
-  
   # Eventually make plot of p-values (1- rejection shares) as function of contamination parameter gamma
   # (corresponds to figure 3 in paper)
-  figure_3 = ggplot(data = df_rej_all) +# , aes(x = gamma, group = method)) +
-    #geom_point(data = df_rej_all, aes(x = gamma, y = Rejection.share, colour = method))  +
+  figure_3 = ggplot(data = df_rej_all) +
     geom_line(data = df_rej_all, aes(x = k, y = Rejection_share, colour = test), 
               size = 1.7, linejoin = "round") +
     labs(color = "Test") +
     ylab("   p-values   ") +
     xlab("Contaminated Samples") +
-    #xlab(unname(TeX(c("$\\gamma$")))) +
     ggthemes::theme_economist_white(gray_bg = T) +
     theme(axis.text=element_text(size=13), axis.title=element_text(size=28)) +
     theme(legend.key.size = unit(1, 'cm'),
@@ -316,7 +251,6 @@ dev.off()
     geom_hline(yintercept=0.05/6, linetype="dashed", color = "red4", size = 2) +
     geom_hline(yintercept=0.05, linetype="dashed", color = "#FF0000A0", size = 2) +
     scale_color_manual(values=pal) +
-                       #,labels = method ) +
     theme(axis.text.x = element_text(angle = 0, vjust = 0.5, hjust=1)) +
     theme(axis.text.y = element_text(angle = 0, vjust = 0.5, hjust=1)) +
     theme(axis.title.x = element_text(margin = margin(t = 14, r = 20, b = 0, l = 0))) +
@@ -335,12 +269,8 @@ dev.off()
   figure_4 = ggplot(df_cdf, aes(values, colour = ind)) +
     stat_ecdf(size=1.22) +
     theme(plot.title = element_text(hjust = 1.8, margin = margin(t = 0, r = 20, b = 0, l = 0))) +
-    #scale_y_discrete( name = "Hypothesis: SVM vs.                 ", labels = labels) +
-    #scale_fill_viridis_c(name = "Value of Test Statistic", option = "C", begin = 0.01, end = 0.99) +
-    #coord_cartesian(clip = "off") +
     ggtitle( "CDFs of resampled test statistics (OpenML)") +
     ggtitle( "") +
-    #theme(axis.title.y = element_blank()) +
     theme(axis.title.x = element_blank()) +
     xlim(c(-0.15,0))+
     theme(legend.position = "bottom", legend.key.size = unit(1, 'cm')) +
@@ -360,6 +290,7 @@ dev.off()
   pdf(file= paste0("fig_4.pdf"), width = 12, height = 9)
   print(figure_4)
   dev.off()
-# 
+
+  
  }
 
