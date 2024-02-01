@@ -89,8 +89,8 @@ The **PMLB** test compares algorithm named "cre" (classifier of interest in the 
 - proportion_below_df.rds stores the number of permutation results that are below the observed one
 - dat_openml_filter.rds stores the downloaded OpenMl data (download was done 26.01.2024)
 - dat_final.rds stores the rescaled OpenML data (saved 26.01.2024)
--  fig_2.pdf, fig_3.pdf, fig_4.pdf are the Figures 2 to 4 in the paper visualizing the test results for OpenML
--  fig_5.pdf, fig_6.pdf, fig_7.pdf are the Figures 5 to 7 in the paper visualizing the test results for PMLB 
+-  fig_2.pdf, fig_3.pdf, fig_4.pdf are the Figures 2 to 4 in the paper visualizing the test results for OpenML. They will be produced by the file openml_permutation_tests.R.
+-  fig_5.pdf, fig_6.pdf, fig_7.pdf are the Figures 5 to 7 in the paper visualizing the test results for PMLB. They will be produced by the file pmlb_permutation_tests.R. 
 
 ## References:
 - Blocher, H., Schollmeyer, G., Jansen, C., and Nalenz, M. Depth functions for partial orders with a descriptive analysis of machine learning algorithms. In Miranda, E., Montes, I., Quaeghebeur, E., and Vantaggi, B. (eds.), Proceedings of the Thirteenth International Symposium on Imprecise Probability: Theories and Applications, volume 215 of Proceedings of Machine Learning Research, pp. 59–71. PMLR, 11–14 Jul 2023
