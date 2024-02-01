@@ -24,7 +24,7 @@ The code was tested with
 on
 
 - Linux Ubuntu 20.04.5
-- Windows 10 
+- Windows 10/11
 
 ## Notation
 To clarify the different notations between the article in the Code.
