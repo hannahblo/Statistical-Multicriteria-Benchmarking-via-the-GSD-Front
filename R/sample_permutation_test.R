@@ -58,7 +58,7 @@ sample_random_subset <- function(dat_final, size_each_group = 100,
 
 
 
-#' This function computes xi, in paper: See Section 5.3, Proposition 1 and 2
+#' This function computes xi
 #'
 #' @param constraint_r1_values: three vectors representing the constraints given
 #' by R_1, this is a output of function compute_constraints_r1 from file

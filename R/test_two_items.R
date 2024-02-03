@@ -10,7 +10,6 @@ test_two_items <- function(dat_set,
                            reverse = FALSE) {
 
   ### Step 1: Compute the constraints given by R1 and R2
-  # see Article Equation (12) in Section 7
   # start_time_r1 <- Sys.time()
   constraint_r1_values <- compute_constraints_r1(dat_set)
   # total_time_r1 <- Sys.time() - start_time_r1
@@ -27,7 +26,6 @@ test_two_items <- function(dat_set,
 
 
   ### Step 2: Compute xi
-  # In paper: See Section 5.3, Proposition 1 and 2
   # Informations about gurobi (page 643ff):
   # https://www.gurobi.com/wp-content/plugins/hd_documentations/documentation/9.0/refman.pdf
   # (accessed: 07.02.2023)
@@ -36,7 +34,6 @@ test_two_items <- function(dat_set,
 
 
   ### Step 3: Compute the permutation test based on four different eps values
-  # In paper: See Section 5.2
 
 
   # the general gurobi model

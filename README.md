@@ -6,8 +6,8 @@ This anonymous repository contains R-code and data sets corresponding to the "St
 
 The structure of the repository is as follows:
 - File _setup_session.R installs all (except for gurobi) needed R-packages.
-- File openml_permutation_tests.R main file to compute the permutation test and the main plots based on the OpenML suite
-- File pmlb_permutation_tests.R main file to compute the permutation test and the main plots based on the PMLB suite
+- File openml_permutation_tests.R is the main file to compute the permutation test and the main plots based on the OpenML suite
+- File pmlb_permutation_tests.R is the main file to compute the permutation test and the main plots based on the PMLB suite
 - Folder R/ contains the needed functions (permutation test, sampling, definition of the constraint matrix, plotting etc) for the analysis.
 - Folder pmbl_results/ contains the results as well as the code of the evaluations (robustified) accuracy on the PMLB suite
 - Folder openml_permutation_results contains all the results provided by the file openml_permutation_tests.R (Note that they are not automatically saved in this folder, but copied to it.)
@@ -25,7 +25,7 @@ on
 - Windows 11 Pro 10.0. build 22621
 
 ## Notation
-To clarify the different notations between the article in the Code.
+Clarification of the differences in the notation between the article and the code.
 
 For OpenML:
 - "classif.svm" is renamed to "SVM" in the article

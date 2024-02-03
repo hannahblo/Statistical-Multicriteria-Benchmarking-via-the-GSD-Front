@@ -15,9 +15,6 @@ compute_constraints_r1 <- function(data_set) {
 
   # Sorted first by ordinal_1, then within a ordinal_1 categories is sorted by
   # ordinal_2 and analogously then by numeric.
-  #TODO
-  # Überlegen wie order bei poset --> vorschlag hier einfach eine total ORdnung
-  # nehmen die fix ist und übergeben wird
   sort_dat <- data_set[
     order(data_set[["ordinal_1"]], data_set[["ordinal_2"]], data_set[["numeric"]]),
   ]
@@ -73,8 +70,6 @@ compute_constraints_r1 <- function(data_set) {
     # Value comparing which value is above basis_value
     basis_value <- sort_dat[i, c("ordinal_1", "ordinal_2", "numeric")]
     # First, we consider only the ordinal part
-    #TODO
-    # Hier muss man über poset structur gehen
     larger_ordinal <- intersect(
       which(i_start_ordinal_groups[, 1] >= basis_value[1, 1]),
       which(i_start_ordinal_groups[, 2] >= basis_value[1, 2]))
@@ -213,8 +208,6 @@ compute_constraints_r2 <- function(data_set, df_r1_values) {
                                    "ordinal_1_upper", "ordinal_2_upper",
                                    "difference_numeric")]
     print(paste0("Now at row ", i, " of sort_df_r1 with total number of ", dim(sort_df_r1)[1], " rows."))
-    #TODO
-    # wie hier ordern durchgehn?
     basis_value_id <- sort_df_r1[i, c("ID_lower", "ID_upper")]
     larger_ordinal <- Reduce(intersect,
                              list(which(i_df_ordinal_groups[, 1] >= basis_value[1, 1]),
