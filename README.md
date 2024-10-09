@@ -2,7 +2,7 @@
 # Statistical Multicriteria Benchmarking via the GSD-Front
 
 ## Introduction
-This anonymous repository contains R-code and data sets corresponding to the "Statistical Multicriteria Benchmarking via the GSD-Front" article. We apply the introduced tests on two data sets: This are given by the OpenML and the PLMB suite.
+This repository contains R-code and data sets corresponding to the "Statistical Multicriteria Benchmarking via the GSD-Front" article. We apply the introduced tests on two data sets: This are given by the OpenML and the PLMB suite.
 
 The structure of the repository is as follows:
 - File _setup_session.R installs all (except for gurobi) needed R-packages.
